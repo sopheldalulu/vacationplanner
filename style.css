@@ -60,11 +60,9 @@ button {
 .logo {
     color: var(--text);
     text-decoration: none;
-
     display: flex;
     align-items: center;
     gap: 8px;
-
     font-family: "Gaegu", cursive;
     font-size: 29px;
     font-weight: 700;
@@ -76,7 +74,7 @@ button {
     font-size: 30px;
 }
 
-.my-trip-buttom {
+.my-trip-button {
     text-decoration: none;
     color: var(--text);
     display: flex;
