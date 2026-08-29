@@ -522,10 +522,13 @@ gmp-place-autocomplete {
 
 /*pinterest like grid*/
 
-.places-grid,
-.saved-grid {
+.places-grid {
     columns: 5;
     column-gap: 18px;
+}
+
+.saved-grid {
+    width: 100%;
 }
 
 
