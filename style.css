@@ -58,27 +58,44 @@ button {
 }
 
 .logo {
-    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
     text-decoration: none;
+    color: var(--text);
+}
+
+.logo-image-wrapper {
+    width: 58px;
+    height: 58px;
+
+    overflow: hidden;
 
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+
+    flex-shrink: 0;
 }
 
-.logo-mark {
-    width: 52px;
-    height: 52px;
+.logo-image {
+    width: 100px;
+    height: 100px;
+
     object-fit: contain;
+
+    transform: scale(1.75);
+
     display: block;
-    flex-shrink: 0;
 }
 
 .logo-text {
     font-family: "Gaegu", cursive;
-    font-size: 29px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 1;
+
     color: var(--text);
 }
 
