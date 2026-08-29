@@ -19,7 +19,7 @@
     Schedule your trip windows to accurately align itinerary events with your travel dates. 
 
 NOTE:
-    Perfect Day is a work in progress. Any comments and complains are accepted. 
+    Perfect Day is a work in progress. Any comments and complaints are accepted. 
     
     
     
