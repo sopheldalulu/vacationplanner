@@ -1,3 +1,7 @@
+body {
+    background: hotpink !important;
+}
+
 :root {
     --cream: #fffaf5;
     --white: #ffffff;
