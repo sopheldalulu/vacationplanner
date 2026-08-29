@@ -1,9 +1,3 @@
-body {
-    margin: 0;
-    background: var(--cream);
-    color: var(--text);
-    font-family: "DM Sans", sans-serif
-}
 :root {
     --cream: #fffaf5;
     --white: #ffffff;
@@ -26,7 +20,12 @@ html {
     scroll-behavior: smooth;
 }
 
-
+body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--text);
+    font-family: "DM Sans", sans-serif
+}
 
 button, input {
     font: inherit;
