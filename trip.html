@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -10,10 +9,14 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="description"
+        content="Your saved Perfect Day vacation places and itinerary."
+    >
+
     <title>My Trip | Perfect Day</title>
 
-    <!-- Google Fonts -->
-
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link
@@ -24,15 +27,29 @@
 
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Gaegu:wght@400;700&display=swap"
-        rel="preconnect"
+        rel="stylesheet"
     >
 
-    <!--  existing CSS -->
+    <!-- Existing site CSS -->
     <link rel="stylesheet" href="style.css">
 
 
-    <!-- Trip page-specific CSS -->
     <style>
+
+        :root {
+            --cream: #fffaf5;
+            --white: #ffffff;
+            --text: #282825;
+            --muted: #77736d;
+            --border: #ece7e1;
+            --coral: #ff806c;
+            --coral-hover: #f36e5a;
+            --yellow: #ffd86f;
+            --sage: #bfd2ba;
+            --sky: #b9dce8;
+            --shadow: 0 8px 30px rgba(40, 40, 37, 0.08);
+        }
+
 
         .trip-page {
             width: min(1450px, 94%);
@@ -41,17 +58,21 @@
         }
 
 
+        /* =========================
+           PAGE HEADER
+        ========================== */
+
         .trip-page-header {
-            margin-bottom: 35px;
+            margin-bottom: 32px;
         }
 
 
         .trip-page-header h1 {
             font-family: "Gaegu", cursive;
-            font-size: clamp(55px, 8vw, 90px);
+            font-size: clamp(58px, 8vw, 92px);
             line-height: 0.95;
+
             margin: 0;
-            padding: 10px;
         }
 
 
@@ -62,14 +83,19 @@
 
         .trip-page-description {
             color: var(--muted);
-            margin-top: 15px;
-            max-width: 650px;
+
+            max-width: 670px;
+
+            margin-top: 18px;
+
             line-height: 1.6;
-            padding-top: 10px;
+            font-size: 16px;
         }
 
 
-        /* trip summary */
+        /* =========================
+           TRIP SUMMARY
+        ========================== */
 
         .trip-summary-card {
             background: white;
@@ -77,34 +103,44 @@
             border: 1px solid var(--border);
             border-radius: 24px;
 
-            padding: 22px;
+            padding: 20px;
 
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
 
-            gap: 18px;
+            gap: 15px;
 
-            margin-bottom: 35px;
+            box-shadow: var(--shadow);
+
+            margin-bottom: 38px;
         }
 
 
         .trip-summary-left {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 9px;
+
+            min-width: 0;
         }
 
 
         .summary-pill {
+            padding: 10px 15px;
+
             background: #faf7f3;
 
             border-radius: 999px;
 
-            padding: 10px 14px;
-
             font-size: 13px;
+
+            max-width: 350px;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
 
@@ -113,23 +149,32 @@
 
             color: var(--text);
 
-            font-weight: 700;
-
-            padding: 10px 16px;
+            background: white;
 
             border: 1px solid var(--border);
             border-radius: 999px;
 
-            background: white;
+            padding: 10px 16px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
         }
 
 
-        /* tabs */
+        .change-trip-link:hover {
+            background: #faf7f3;
+        }
+
+
+        /* =========================
+           TABS
+        ========================== */
 
         .trip-tabs {
             display: flex;
 
-            gap: 9px;
+            gap: 8px;
 
             overflow-x: auto;
 
@@ -145,57 +190,76 @@
 
 
         .trip-tab {
-            flex: 0 0 auto;
-
             border: 1px solid var(--border);
 
             background: white;
+
+            color: var(--text);
 
             border-radius: 999px;
 
             padding: 11px 17px;
 
+            flex: 0 0 auto;
+
+            font: inherit;
             font-weight: 600;
+
+            cursor: pointer;
         }
 
 
         .trip-tab.active {
             background: var(--text);
             color: white;
+
             border-color: var(--text);
         }
 
 
-        /* section */
+        /* =========================
+           BOARD HEADER
+        ========================== */
 
         .board-heading {
             display: flex;
-            align-items: end;
             justify-content: space-between;
+            align-items: flex-end;
 
             gap: 20px;
 
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
 
         .board-heading h2 {
             font-family: "Gaegu", cursive;
 
-            font-size: clamp(40px, 5vw, 60px);
+            font-size: clamp(42px, 5vw, 62px);
 
             margin: 0;
         }
 
 
-        .board-heading p {
-            color: var(--muted);
+        .board-heading p:last-child {
+            margin: 3px 0 0;
 
-            margin: 4px 0 0;
+            color: var(--muted);
         }
 
 
-        /* saved pin grid */
+        .trip-status {
+            color: var(--muted);
+
+            min-height: 25px;
+
+            margin: 10px 0 18px;
+        }
+
+
+        /* =========================
+           PINTEREST GRID
+        ========================== */
 
         .trip-pin-grid {
             columns: 4;
@@ -208,9 +272,9 @@
 
             width: 100%;
 
-            break-inside: avoid;
+            margin: 0 0 23px;
 
-            margin: 0 0 22px;
+            break-inside: avoid;
         }
 
 
@@ -219,31 +283,29 @@
 
             overflow: hidden;
 
-            border-radius: 20px;
+            border-radius: 21px;
 
             background: #eee9e3;
         }
 
 
         .trip-pin-image {
-            width: 100%;
-
             display: block;
+
+            width: 100%;
 
             object-fit: cover;
 
-            min-height: 220px;
+            background: #eee9e3;
         }
 
 
         .trip-pin-fallback {
-            min-height: 270px;
+            min-height: 280px;
 
             display: flex;
             align-items: center;
             justify-content: center;
-
-            font-size: 50px;
 
             background:
                 linear-gradient(
@@ -251,30 +313,74 @@
                     var(--sky),
                     var(--sage)
                 );
+
+            font-size: 52px;
         }
 
 
         .remove-pin-button {
             position: absolute;
 
-            top: 12px;
-            right: 12px;
+            top: 11px;
+            right: 11px;
 
-            width: 42px;
-            height: 42px;
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             border: none;
-
             border-radius: 50%;
 
-            background: rgba(255, 255, 255, 0.94);
+            background: rgba(255, 255, 255, 0.95);
 
-            font-size: 18px;
+            color: var(--text);
+
+            font-size: 23px;
+
+            cursor: pointer;
         }
 
 
+        .remove-pin-button:hover {
+            background: var(--coral);
+            color: white;
+        }
+
+
+        .photo-attribution {
+            position: absolute;
+
+            bottom: 7px;
+            left: 7px;
+
+            max-width: calc(100% - 14px);
+
+            background: rgba(0, 0, 0, 0.55);
+
+            color: white;
+
+            border-radius: 7px;
+
+            padding: 4px 6px;
+
+            font-size: 9px;
+        }
+
+
+        .photo-attribution a {
+            color: white;
+        }
+
+
+        /* =========================
+           CARD DETAILS
+        ========================== */
+
         .trip-pin-info {
-            padding: 10px 3px 0;
+            padding: 11px 3px 0;
         }
 
 
@@ -286,14 +392,14 @@
 
 
         .trip-pin-meta {
-            color: var(--muted);
-
-            font-size: 12px;
-
             display: flex;
             flex-wrap: wrap;
 
             gap: 8px;
+
+            color: var(--muted);
+
+            font-size: 12px;
         }
 
 
@@ -301,41 +407,41 @@
             color: var(--muted);
 
             font-size: 12px;
+            line-height: 1.45;
 
-            line-height: 1.4;
+            margin: 7px 0;
         }
 
 
         .day-select-label {
             display: block;
 
-            margin-top: 11px;
-            margin-bottom: 5px;
+            margin: 12px 0 5px;
+
+            font-size: 10px;
+            font-weight: 700;
 
             color: var(--muted);
 
-            font-size: 11px;
-            font-weight: 700;
+            letter-spacing: 0.08em;
 
             text-transform: uppercase;
-
-            letter-spacing: 0.06em;
         }
 
 
         .day-select {
             width: 100%;
 
-            padding: 10px;
+            padding: 10px 11px;
 
             border: 1px solid var(--border);
-
             border-radius: 12px;
 
             background: white;
 
-            font: inherit;
+            color: var(--text);
 
+            font: inherit;
             font-size: 13px;
         }
 
@@ -345,46 +451,51 @@
 
             margin-top: 9px;
 
-            font-size: 12px;
-
-            font-weight: 600;
-
             color: var(--text);
+
+            font-size: 12px;
+            font-weight: 700;
         }
 
 
-        /* empty */
+        /* =========================
+           EMPTY
+        ========================== */
 
         .trip-empty {
-            max-width: 600px;
+            max-width: 570px;
 
-            margin: 50px auto;
-
-            text-align: center;
+            margin: 45px auto;
 
             background: white;
 
             border: 1px dashed #d6cec5;
-
             border-radius: 26px;
 
-            padding: 55px 25px;
+            padding: 50px 25px;
+
+            text-align: center;
         }
 
 
-        .trip-empty span {
+        .trip-empty[hidden] {
+            display: none;
+        }
+
+
+        .trip-empty-icon {
             display: block;
 
-            font-size: 48px;
+            margin-bottom: 12px;
 
-            margin-bottom: 15px;
+            font-size: 45px;
         }
 
 
         .trip-empty h2 {
             font-family: "Gaegu", cursive;
 
-            font-size: 45px;
+            font-size: 44px;
 
             margin: 0;
         }
@@ -400,10 +511,9 @@
         .discover-link {
             display: inline-block;
 
-            margin-top: 10px;
+            margin-top: 8px;
 
             background: var(--coral);
-
             color: white;
 
             text-decoration: none;
@@ -416,29 +526,45 @@
         }
 
 
-        /* loading */
-
-        .trip-status {
-            color: var(--muted);
-
-            margin: 20px 0;
-
-            min-height: 25px;
-        }
-
+        /* =========================
+           GOOGLE / ERROR
+        ========================== */
 
         .google-credit {
+            margin-top: 40px;
+
             color: var(--muted);
 
             text-align: center;
-
-            margin-top: 40px;
 
             font-size: 11px;
         }
 
 
-        /* responsiveness */
+        .error-box {
+            display: none;
+
+            background: #fff0ed;
+            color: #9b3a31;
+
+            padding: 14px 17px;
+
+            border-radius: 14px;
+
+            margin-bottom: 20px;
+
+            font-size: 13px;
+        }
+
+
+        .error-box.show {
+            display: block;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
 
         @media (max-width: 1100px) {
 
@@ -451,6 +577,11 @@
 
         @media (max-width: 750px) {
 
+            .trip-page {
+                padding-top: 35px;
+            }
+
+
             .trip-pin-grid {
                 columns: 2;
                 column-gap: 12px;
@@ -458,20 +589,25 @@
 
 
             .trip-summary-card {
-                align-items: flex-start;
                 flex-direction: column;
+                align-items: flex-start;
+            }
+
+
+            .summary-pill {
+                max-width: 100%;
             }
 
 
             .board-heading {
-                align-items: flex-start;
                 flex-direction: column;
+                align-items: flex-start;
             }
 
         }
 
 
-        @media (max-width: 400px) {
+        @media (max-width: 420px) {
 
             .trip-pin-grid {
                 columns: 1;
@@ -487,15 +623,24 @@
 <body>
 
 
-    <!-- headerr -->
+    <!-- =========================
+         HEADER
+    ========================== -->
 
     <header class="site-header">
 
         <nav class="navbar">
 
             <a href="index.html" class="logo">
-                <span class="logo-sun">☀</span>
-                <span>Perfect Day</span>
+
+                <span class="logo-sun">
+                    ☀
+                </span>
+
+                <span>
+                    Perfect Day
+                </span>
+
             </a>
 
 
@@ -504,6 +649,13 @@
                 class="my-trip-button"
             >
                 ← Discover
+
+                <span
+                    class="trip-count"
+                    id="saved-count"
+                >
+                    0
+                </span>
             </a>
 
         </nav>
@@ -515,7 +667,9 @@
     <main class="trip-page">
 
 
-        <!-- page title -->
+        <!-- =========================
+             TITLE
+        ========================== -->
 
         <section class="trip-page-header">
 
@@ -531,20 +685,32 @@
 
 
             <p class="trip-page-description">
-                
                 All your saved destinations are here.
+                Keep places in Ideas or organize them
+                into the days of your trip.
             </p>
 
         </section>
 
 
 
-        <!-- trip summary -->
+        <!-- =========================
+             ERROR
+        ========================== -->
 
-        <section
-            class="trip-summary-card"
-            id="trip-summary"
-        >
+        <div
+            class="error-box"
+            id="error-box"
+            role="alert"
+        ></div>
+
+
+
+        <!-- =========================
+             TRIP INFO
+        ========================== -->
+
+        <section class="trip-summary-card">
 
             <div class="trip-summary-left">
 
@@ -552,7 +718,7 @@
                     class="summary-pill"
                     id="trip-destination"
                 >
-                    📍 No destination
+                    📍 Loading destination...
                 </span>
 
 
@@ -560,7 +726,7 @@
                     class="summary-pill"
                     id="trip-stay"
                 >
-                    🏨 No stay added
+                    🏨 Loading stay...
                 </span>
 
 
@@ -568,7 +734,7 @@
                     class="summary-pill"
                     id="trip-dates"
                 >
-                    📅 No dates
+                    📅 Loading dates...
                 </span>
 
             </div>
@@ -585,7 +751,9 @@
 
 
 
-        <!-- day tabs -->
+        <!-- =========================
+             DAY TABS
+        ========================== -->
 
         <div
             class="trip-tabs"
@@ -613,7 +781,9 @@
 
 
 
-        <!-- board -->
+        <!-- =========================
+             SAVED PLACES
+        ========================== -->
 
         <section>
 
@@ -632,7 +802,7 @@
 
 
                     <p id="board-description">
-                        Choose a day for each place whenever you're ready.
+                        Everything you've pinned for this trip.
                     </p>
 
                 </div>
@@ -645,15 +815,14 @@
                 id="trip-status"
                 aria-live="polite"
             >
-                Loading your trip...
+                Loading your saved places...
             </p>
 
 
             <div
                 class="trip-pin-grid"
                 id="trip-pin-grid"
-            >
-            </div>
+            ></div>
 
 
             <div
@@ -662,7 +831,7 @@
                 hidden
             >
 
-                <span>
+                <span class="trip-empty-icon">
                     🧳
                 </span>
 
@@ -674,7 +843,7 @@
 
                 <p>
                     Go back to Discover and tap the heart
-                    on places you want to visit.
+                    on any place you want to visit.
                 </p>
 
 
@@ -699,26 +868,33 @@
 
 
 
-    <!-- script -->
-
     <script>
 
-        let PlaceClass = null;
+        /* =========================================
+           STORAGE
 
-        let savedPlaceIds =
-            JSON.parse(
-                localStorage.getItem(
-                    "perfectDaySavedPlaces"
-                ) || "[]"
-            );
+           KEEP THESE NAMES.
+
+           These are the same names used by
+           your existing index page.
+        ========================================= */
+
+        const STORAGE = {
+
+            trip:
+                "perfectDayTrip",
+
+            savedPlaces:
+                "perfectDaySavedPlaces",
+
+            dayAssignments:
+                "perfectDayDayAssignments"
+
+        };
 
 
-        let dayAssignments =
-            JSON.parse(
-                localStorage.getItem(
-                    "perfectDayDayAssignments"
-                ) || "{}"
-            );
+        let PlaceClass =
+            null;
 
 
         let currentFilter =
@@ -729,22 +905,415 @@
             [];
 
 
-        const storedTrip =
-            JSON.parse(
-                localStorage.getItem(
-                    "perfectDayTrip"
-                ) || "null"
+        let savedPlaceIds =
+            [];
+
+
+        let savedPlaceFallbacks =
+            new Map();
+
+
+        let dayAssignments =
+            {};
+
+
+        let tripData =
+            null;
+
+
+
+        /* =========================================
+           SAFE JSON
+        ========================================= */
+
+        function readJSON(
+            key,
+            fallback
+        ) {
+
+            try {
+
+                const value =
+                    localStorage.getItem(
+                        key
+                    );
+
+
+                if (!value) {
+
+                    return fallback;
+
+                }
+
+
+                return JSON.parse(
+                    value
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    `Could not read ${key}`,
+                    error
+                );
+
+
+                return fallback;
+
+            }
+
+        }
+
+
+
+        /* =========================================
+           SUPPORT OLD + NEW SAVE FORMATS
+        ========================================= */
+
+        function loadExistingStorage() {
+
+            const rawSaved =
+                readJSON(
+                    STORAGE.savedPlaces,
+                    []
+                );
+
+
+            savedPlaceIds =
+                [];
+
+
+            savedPlaceFallbacks =
+                new Map();
+
+
+            if (
+                Array.isArray(rawSaved)
+            ) {
+
+                rawSaved.forEach(
+                    item => {
+
+                        /*
+                            Current format:
+
+                            [
+                                "PLACE_ID",
+                                "PLACE_ID"
+                            ]
+                        */
+
+                        if (
+                            typeof item ===
+                            "string"
+                        ) {
+
+                            savedPlaceIds.push(
+                                item
+                            );
+
+                            return;
+
+                        }
+
+
+                        /*
+                            Also support older
+                            object-style saves.
+                        */
+
+                        if (
+                            item &&
+                            typeof item ===
+                            "object"
+                        ) {
+
+                            const id =
+                                item.placeId ||
+                                item.id;
+
+
+                            if (id) {
+
+                                savedPlaceIds.push(
+                                    id
+                                );
+
+
+                                savedPlaceFallbacks.set(
+                                    id,
+                                    item
+                                );
+
+                            }
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            /*
+                Remove duplicates without changing
+                what's saved on the index page.
+            */
+
+            savedPlaceIds =
+                [
+                    ...new Set(
+                        savedPlaceIds
+                    )
+                ];
+
+
+            dayAssignments =
+                readJSON(
+                    STORAGE.dayAssignments,
+                    {}
+                );
+
+
+            tripData =
+                normalizeTrip(
+                    readJSON(
+                        STORAGE.trip,
+                        null
+                    )
+                );
+
+
+            document.getElementById(
+                "saved-count"
+            ).textContent =
+                savedPlaceIds.length;
+
+
+            showBasicTripInfo();
+
+        }
+
+
+
+        /* =========================================
+           NORMALIZE TRIP DATA
+
+           This means the page can read either:
+
+           {
+             destinationPlaceId: "...",
+             stayPlaceId: "...",
+             startDate: "...",
+             endDate: "..."
+           }
+
+           OR older object-based formats.
+        ========================================= */
+
+        function normalizeTrip(
+            raw
+        ) {
+
+            if (!raw) {
+
+                return null;
+
+            }
+
+
+            return {
+
+                destinationPlaceId:
+
+                    raw.destinationPlaceId ||
+
+                    raw.destination?.placeId ||
+
+                    raw.destination?.id ||
+
+                    null,
+
+
+                destinationName:
+
+                    raw.destinationName ||
+
+                    raw.destination?.name ||
+
+                    raw.destination?.displayName ||
+
+                    null,
+
+
+                stayPlaceId:
+
+                    raw.stayPlaceId ||
+
+                    raw.stay?.placeId ||
+
+                    raw.stay?.id ||
+
+                    null,
+
+
+                stayName:
+
+                    raw.stayName ||
+
+                    raw.stay?.name ||
+
+                    raw.stay?.displayName ||
+
+                    null,
+
+
+                startDate:
+
+                    raw.startDate ||
+
+                    raw.dates?.startDate ||
+
+                    raw.dates?.start ||
+
+                    raw.start ||
+
+                    null,
+
+
+                endDate:
+
+                    raw.endDate ||
+
+                    raw.dates?.endDate ||
+
+                    raw.dates?.end ||
+
+                    raw.end ||
+
+                    null
+
+            };
+
+        }
+
+
+
+        /* =========================================
+           BASIC INFO
+
+           Runs BEFORE Google loads.
+        ========================================= */
+
+        function showBasicTripInfo() {
+
+            if (!tripData) {
+
+                setText(
+                    "trip-destination",
+                    "📍 No destination saved"
+                );
+
+
+                setText(
+                    "trip-stay",
+                    "🏨 No stay saved"
+                );
+
+
+                setText(
+                    "trip-dates",
+                    "📅 No dates saved"
+                );
+
+
+                return;
+
+            }
+
+
+            setText(
+
+                "trip-destination",
+
+                tripData.destinationName
+
+                    ? `📍 ${tripData.destinationName}`
+
+                    : tripData.destinationPlaceId
+
+                        ? "📍 Loading destination..."
+
+                        : "📍 No destination saved"
+
             );
 
 
-        /* google initialization */
+            setText(
+
+                "trip-stay",
+
+                tripData.stayName
+
+                    ? `🏨 ${tripData.stayName}`
+
+                    : tripData.stayPlaceId
+
+                        ? "🏨 Loading stay..."
+
+                        : "🏨 No stay added"
+
+            );
+
+
+            if (
+                tripData.startDate &&
+                tripData.endDate
+            ) {
+
+                setText(
+
+                    "trip-dates",
+
+                    `📅 ${formatDateRange(
+                        tripData.startDate,
+                        tripData.endDate
+                    )}`
+
+                );
+
+            }
+
+            else {
+
+                setText(
+                    "trip-dates",
+                    "📅 No dates saved"
+                );
+
+            }
+
+
+            createDayTabs();
+
+        }
+
+
+
+        /* =========================================
+           GOOGLE INITIALIZATION
+        ========================================= */
 
         window.initTripPage =
             async function () {
 
                 try {
 
-                    const { Place } =
+                    const {
+                        Place
+                    } =
                         await google.maps.importLibrary(
                             "places"
                         );
@@ -754,9 +1323,8 @@
                         Place;
 
 
-                    await loadTripSummary();
+                    await enrichTripSummary();
 
-                    createDayTabs();
 
                     await loadSavedPlaces();
 
@@ -765,136 +1333,168 @@
                 catch (error) {
 
                     console.error(
-                        "Google Places error:",
+                        "Google Places initialization failed:",
                         error
                     );
 
 
-                    document.getElementById(
-                        "trip-status"
-                    ).textContent =
-                        "Google Places could not load. Check your API key and Google Cloud settings.";
+                    showError(
+                        "Google Places could not load. Check the API key, enabled APIs, billing, and website restrictions."
+                    );
+
+
+                    renderFallbackSavedPlaces();
 
                 }
 
             };
 
 
-        /* trip summary */
 
-        async function loadTripSummary() {
+        /* =========================================
+           GET DESTINATION / HOTEL NAMES
+        ========================================= */
 
-            if (!storedTrip) {
+        async function enrichTripSummary() {
 
-                document.getElementById(
-                    "trip-status"
-                ).textContent =
-                    "No trip settings found.";
+            if (
+                !tripData ||
+                !PlaceClass
+            ) {
 
                 return;
+
             }
 
 
-            /* DESTINATION */
-
             if (
-                storedTrip.destinationPlaceId
+                tripData.destinationPlaceId
             ) {
 
                 try {
 
                     const destination =
                         new PlaceClass({
+
                             id:
-                                storedTrip.destinationPlaceId
+                                tripData
+                                    .destinationPlaceId
+
                         });
 
 
                     await destination.fetchFields({
 
                         fields: [
+                            "id",
                             "displayName"
                         ]
 
                     });
 
 
-                    document.getElementById(
-                        "trip-destination"
-                    ).textContent =
-                        `📍 ${destination.displayName}`;
+                    if (
+                        destination.displayName
+                    ) {
+
+                        setText(
+
+                            "trip-destination",
+
+                            `📍 ${destination.displayName}`
+
+                        );
+
+                    }
 
                 }
 
                 catch (error) {
 
                     console.error(
-                        "Destination could not load:",
+                        "Destination failed:",
                         error
                     );
+
+
+                    if (
+                        !tripData.destinationName
+                    ) {
+
+                        setText(
+                            "trip-destination",
+                            "📍 Destination unavailable"
+                        );
+
+                    }
 
                 }
 
             }
 
 
-            /* STAY */
-
             if (
-                storedTrip.stayPlaceId
+                tripData.stayPlaceId
             ) {
 
                 try {
 
                     const stay =
                         new PlaceClass({
+
                             id:
-                                storedTrip.stayPlaceId
+                                tripData
+                                    .stayPlaceId
+
                         });
 
 
                     await stay.fetchFields({
 
                         fields: [
+                            "id",
                             "displayName"
                         ]
 
                     });
 
 
-                    document.getElementById(
-                        "trip-stay"
-                    ).textContent =
-                        `🏨 ${stay.displayName}`;
+                    if (
+                        stay.displayName
+                    ) {
+
+                        setText(
+
+                            "trip-stay",
+
+                            `🏨 ${stay.displayName}`
+
+                        );
+
+                    }
 
                 }
 
                 catch (error) {
 
                     console.error(
-                        "Stay could not load:",
+                        "Stay failed:",
                         error
                     );
 
+
+                    if (
+                        !tripData.stayName
+                    ) {
+
+                        setText(
+                            "trip-stay",
+                            "🏨 Stay unavailable"
+                        );
+
+                    }
+
                 }
-
-            }
-
-
-            /* DATES */
-
-            if (
-                storedTrip.startDate &&
-                storedTrip.endDate
-            ) {
-
-                document.getElementById(
-                    "trip-dates"
-                ).textContent =
-                    `📅 ${formatDateRange(
-                        storedTrip.startDate,
-                        storedTrip.endDate
-                    )}`;
 
             }
 
@@ -902,7 +1502,9 @@
 
 
 
-        /* create days */
+        /* =========================================
+           CREATE DAY TABS
+        ========================================= */
 
         function createDayTabs() {
 
@@ -912,64 +1514,82 @@
                 );
 
 
+            /*
+                Remove old generated Day tabs
+                while preserving All + Ideas.
+            */
+
+            tabs
+                .querySelectorAll(
+                    ".generated-day"
+                )
+                .forEach(
+                    button =>
+                        button.remove()
+                );
+
+
             if (
-                !storedTrip ||
-                !storedTrip.startDate ||
-                !storedTrip.endDate
+                tripData &&
+                tripData.startDate &&
+                tripData.endDate
             ) {
 
-                setupTabListeners();
+                const days =
+                    calculateTripDays(
 
-                return;
+                        tripData.startDate,
 
-            }
+                        tripData.endDate
 
-
-            const numberOfDays =
-                calculateTripDays(
-                    storedTrip.startDate,
-                    storedTrip.endDate
-                );
-
-
-            for (
-                let day = 1;
-                day <= numberOfDays;
-                day++
-            ) {
-
-                const button =
-                    document.createElement(
-                        "button"
                     );
 
 
-                button.type =
-                    "button";
+                for (
+                    let day = 1;
+                    day <= days;
+                    day++
+                ) {
+
+                    const date =
+                        addDays(
+
+                            tripData.startDate,
+
+                            day - 1
+
+                        );
 
 
-                button.className =
-                    "trip-tab";
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
 
 
-                button.dataset.day =
-                    String(day);
+                    button.type =
+                        "button";
 
 
-                const date =
-                    addDays(
-                        storedTrip.startDate,
-                        day - 1
+                    button.className =
+                        "trip-tab generated-day";
+
+
+                    button.dataset.day =
+                        String(day);
+
+
+                    button.textContent =
+                        `Day ${day} · ${formatShortDate(
+                            date
+                        )}`;
+
+
+                    tabs.appendChild(
+                        button
                     );
 
-
-                button.textContent =
-                    `Day ${day} · ${formatShortDate(date)}`;
-
-
-                tabs.appendChild(
-                    button
-                );
+                }
 
             }
 
@@ -986,54 +1606,66 @@
                 .querySelectorAll(
                     ".trip-tab"
                 )
-                .forEach(button => {
+                .forEach(
+                    button => {
 
-                    button.addEventListener(
-                        "click",
-                        () => {
+                        /*
+                            Prevent duplicate listeners
+                            when tabs are regenerated.
+                        */
 
-                            document
-                                .querySelectorAll(
-                                    ".trip-tab"
-                                )
-                                .forEach(tab => {
+                        button.onclick =
+                            () => {
 
-                                    tab.classList.remove(
-                                        "active"
+                                document
+                                    .querySelectorAll(
+                                        ".trip-tab"
+                                    )
+                                    .forEach(
+                                        tab =>
+                                            tab.classList.remove(
+                                                "active"
+                                            )
                                     );
 
-                                });
+
+                                button.classList.add(
+                                    "active"
+                                );
 
 
-                            button.classList.add(
-                                "active"
-                            );
+                                currentFilter =
+                                    button.dataset.day;
 
 
-                            currentFilter =
-                                button.dataset.day;
+                                updateBoardHeading();
 
+                                renderPlaces();
 
-                            updateBoardHeading();
+                            };
 
-                            renderPlaces();
-
-                        }
-                    );
-
-                });
+                    }
+                );
 
         }
 
 
 
-        /* load saved google places */
+        /* =========================================
+           LOAD ALL HEARTED PLACES
+        ========================================= */
 
         async function loadSavedPlaces() {
 
             const status =
                 document.getElementById(
                     "trip-status"
+                );
+
+
+            const empty =
+                document.getElementById(
+                    "trip-empty"
                 );
 
 
@@ -1045,9 +1677,7 @@
                     "";
 
 
-                document.getElementById(
-                    "trip-empty"
-                ).hidden =
+                empty.hidden =
                     false;
 
 
@@ -1056,65 +1686,91 @@
             }
 
 
+            empty.hidden =
+                true;
+
+
             status.textContent =
-                "Loading your saved places...";
+                `Loading ${savedPlaceIds.length} saved place${
+                    savedPlaceIds.length === 1
+                        ? ""
+                        : "s"
+                }...`;
+
+
+            const requests =
+                savedPlaceIds.map(
+                    placeId =>
+                        loadOnePlace(
+                            placeId
+                        )
+                );
+
+
+            const results =
+                await Promise.allSettled(
+                    requests
+                );
 
 
             loadedPlaces =
                 [];
 
 
-            for (
-                let index = 0;
-                index < savedPlaceIds.length;
-                index++
-            ) {
+            results.forEach(
+                (
+                    result,
+                    index
+                ) => {
 
-                const placeId =
-                    savedPlaceIds[index];
+                    if (
+                        result.status ===
+                        "fulfilled"
+                        &&
+                        result.value
+                    ) {
+
+                        loadedPlaces.push(
+                            result.value
+                        );
+
+                    }
+
+                    else {
+
+                        /*
+                            If Google fails for one
+                            older saved object,
+                            preserve what we can.
+                        */
+
+                        const id =
+                            savedPlaceIds[
+                                index
+                            ];
 
 
-                try {
-
-                    const place =
-                        new PlaceClass({
-                            id:
-                                placeId
-                        });
+                        const fallback =
+                            savedPlaceFallbacks.get(
+                                id
+                            );
 
 
-                    await place.fetchFields({
+                        if (fallback) {
 
-                        fields: [
-                            "id",
-                            "displayName",
-                            "formattedAddress",
-                            "rating",
-                            "userRatingCount",
-                            "photos",
-                            "googleMapsURI"
-                        ]
+                            loadedPlaces.push(
+                                createFallbackPlace(
+                                    id,
+                                    fallback
+                                )
+                            );
 
-                    });
+                        }
 
-
-                    loadedPlaces.push(
-                        place
-                    );
+                    }
 
                 }
-
-                catch (error) {
-
-                    console.error(
-                        "Could not load place:",
-                        placeId,
-                        error
-                    );
-
-                }
-
-            }
+            );
 
 
             status.textContent =
@@ -1131,7 +1787,177 @@
 
 
 
-        /* render board */
+        async function loadOnePlace(
+            placeId
+        ) {
+
+            const place =
+                new PlaceClass({
+
+                    id:
+                        placeId
+
+                });
+
+
+            await place.fetchFields({
+
+                fields: [
+                    "id",
+                    "displayName",
+                    "formattedAddress",
+                    "rating",
+                    "userRatingCount",
+                    "photos",
+                    "googleMapsURI",
+                    "primaryTypeDisplayName"
+                ]
+
+            });
+
+
+            return place;
+
+        }
+
+
+
+        function createFallbackPlace(
+            id,
+            saved
+        ) {
+
+            return {
+
+                id:
+                    id,
+
+
+                displayName:
+
+                    saved.name ||
+
+                    saved.displayName ||
+
+                    "Saved place",
+
+
+                formattedAddress:
+
+                    saved.address ||
+
+                    saved.formattedAddress ||
+
+                    "",
+
+
+                rating:
+
+                    saved.rating ||
+
+                    null,
+
+
+                userRatingCount:
+
+                    saved.userRatingCount ||
+
+                    null,
+
+
+                photos:
+                    [],
+
+
+                googleMapsURI:
+
+                    saved.googleMapsURI ||
+
+                    saved.mapsUrl ||
+
+                    null,
+
+
+                isFallback:
+                    true
+
+            };
+
+        }
+
+
+
+        function renderFallbackSavedPlaces() {
+
+            loadedPlaces =
+                [];
+
+
+            savedPlaceIds.forEach(
+                id => {
+
+                    const fallback =
+                        savedPlaceFallbacks.get(
+                            id
+                        );
+
+
+                    if (fallback) {
+
+                        loadedPlaces.push(
+                            createFallbackPlace(
+                                id,
+                                fallback
+                            )
+                        );
+
+                    }
+
+                }
+            );
+
+
+            if (
+                loadedPlaces.length
+            ) {
+
+                setText(
+                    "trip-status",
+                    `${loadedPlaces.length} saved places`
+                );
+
+
+                renderPlaces();
+
+            }
+
+            else if (
+                savedPlaceIds.length
+            ) {
+
+                setText(
+                    "trip-status",
+                    `${savedPlaceIds.length} saved place IDs found, but Google Places must load to display them.`
+                );
+
+            }
+
+            else {
+
+                document.getElementById(
+                    "trip-empty"
+                ).hidden =
+                    false;
+
+            }
+
+        }
+
+
+
+        /* =========================================
+           RENDER FILTERED PLACES
+        ========================================= */
 
         function renderPlaces() {
 
@@ -1145,14 +1971,15 @@
                 "";
 
 
-            const filteredPlaces =
+            const places =
                 loadedPlaces.filter(
                     place => {
 
                         const assignment =
                             dayAssignments[
                                 place.id
-                            ] || "ideas";
+                            ] ||
+                            "ideas";
 
 
                         if (
@@ -1171,7 +1998,9 @@
                         ) {
 
                             return (
-                                assignment ===
+                                String(
+                                    assignment
+                                ) ===
                                 "ideas"
                             );
 
@@ -1192,31 +2021,51 @@
 
 
             if (
-                !filteredPlaces.length
+                !places.length
             ) {
 
-                grid.innerHTML = `
-                    <div class="trip-empty">
-                        <span>📌</span>
+                const message =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                message.className =
+                    "trip-empty";
+
+
+                message.innerHTML =
+                    `
+                        <span class="trip-empty-icon">
+                            📌
+                        </span>
 
                         <h2>
                             Nothing here yet.
                         </h2>
 
                         <p>
-                            Assign one of your saved places
-                            to this day.
+                            Assign a saved place to this day
+                            using the dropdown on its card.
                         </p>
-                    </div>
-                `;
+                    `;
+
+
+                grid.appendChild(
+                    message
+                );
+
 
                 return;
 
             }
 
 
-            filteredPlaces.forEach(
-                (place, index) => {
+            places.forEach(
+                (
+                    place,
+                    index
+                ) => {
 
                     grid.appendChild(
                         createPlaceCard(
@@ -1232,7 +2081,9 @@
 
 
 
-        /* create card */
+        /* =========================================
+           CREATE PIN
+        ========================================= */
 
         function createPlaceCard(
             place,
@@ -1247,6 +2098,7 @@
 
             article.className =
                 "trip-pin";
+
 
 
             /* IMAGE */
@@ -1266,6 +2118,10 @@
                 place.photos.length
             ) {
 
+                const photo =
+                    place.photos[0];
+
+
                 const image =
                     document.createElement(
                         "img"
@@ -1277,27 +2133,33 @@
 
 
                 image.alt =
-                    `Photo of ${place.displayName}`;
+                    `Photo of ${
+                        place.displayName ||
+                        "saved place"
+                    }`;
 
 
-                const heights = [
-                    310,
-                    390,
-                    340,
-                    430,
-                    290
-                ];
+                const heights =
+                    [
+                        320,
+                        400,
+                        350,
+                        445,
+                        300
+                    ];
 
 
                 image.style.height =
-                    `${heights[
-                        index %
-                        heights.length
-                    ]}px`;
+                    `${
+                        heights[
+                            index %
+                            heights.length
+                        ]
+                    }px`;
 
 
                 image.src =
-                    place.photos[0].getURI({
+                    photo.getURI({
 
                         maxWidth:
                             900
@@ -1307,6 +2169,12 @@
 
                 imageWrap.appendChild(
                     image
+                );
+
+
+                addPhotoAttribution(
+                    imageWrap,
+                    photo
                 );
 
             }
@@ -1334,6 +2202,7 @@
             }
 
 
+
             /* REMOVE */
 
             const removeButton =
@@ -1355,8 +2224,14 @@
 
 
             removeButton.setAttribute(
+
                 "aria-label",
-                `Remove ${place.displayName}`
+
+                `Remove ${
+                    place.displayName ||
+                    "place"
+                }`
+
             );
 
 
@@ -1382,7 +2257,8 @@
             );
 
 
-            /* INFO */
+
+            /* CONTENT */
 
             const info =
                 document.createElement(
@@ -1401,13 +2277,17 @@
 
 
             title.textContent =
-                place.displayName;
+                place.displayName ||
+                "Saved place";
 
 
             info.appendChild(
                 title
             );
 
+
+
+            /* META */
 
             const meta =
                 document.createElement(
@@ -1420,7 +2300,9 @@
 
 
             if (
-                place.rating
+                Number.isFinite(
+                    place.rating
+                )
             ) {
 
                 const rating =
@@ -1430,7 +2312,9 @@
 
 
                 rating.textContent =
-                    `⭐ ${place.rating.toFixed(1)}`;
+                    `⭐ ${Number(
+                        place.rating
+                    ).toFixed(1)}`;
 
 
                 if (
@@ -1438,7 +2322,11 @@
                 ) {
 
                     rating.textContent +=
-                        ` (${place.userRatingCount.toLocaleString()})`;
+                        ` (${
+                            Number(
+                                place.userRatingCount
+                            ).toLocaleString()
+                        })`;
 
                 }
 
@@ -1450,10 +2338,35 @@
             }
 
 
+            if (
+                place.primaryTypeDisplayName
+            ) {
+
+                const type =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                type.textContent =
+                    place
+                        .primaryTypeDisplayName;
+
+
+                meta.appendChild(
+                    type
+                );
+
+            }
+
+
             info.appendChild(
                 meta
             );
 
+
+
+            /* ADDRESS */
 
             if (
                 place.formattedAddress
@@ -1478,6 +2391,7 @@
                 );
 
             }
+
 
 
             /* DAY SELECT */
@@ -1506,13 +2420,19 @@
                 "day-select";
 
 
-            const currentAssignment =
-                dayAssignments[
-                    place.id
-                ] || "ideas";
+            select.setAttribute(
+
+                "aria-label",
+
+                `Choose itinerary day for ${
+                    place.displayName ||
+                    "place"
+                }`
+
+            );
 
 
-            addSelectOption(
+            addOption(
                 select,
                 "ideas",
                 "♡ Ideas"
@@ -1520,15 +2440,18 @@
 
 
             if (
-                storedTrip &&
-                storedTrip.startDate &&
-                storedTrip.endDate
+                tripData &&
+                tripData.startDate &&
+                tripData.endDate
             ) {
 
                 const days =
                     calculateTripDays(
-                        storedTrip.startDate,
-                        storedTrip.endDate
+
+                        tripData.startDate,
+
+                        tripData.endDate
+
                     );
 
 
@@ -1540,15 +2463,24 @@
 
                     const date =
                         addDays(
-                            storedTrip.startDate,
+
+                            tripData.startDate,
+
                             day - 1
+
                         );
 
 
-                    addSelectOption(
+                    addOption(
+
                         select,
+
                         String(day),
-                        `Day ${day} · ${formatShortDate(date)}`
+
+                        `Day ${day} · ${formatShortDate(
+                            date
+                        )}`
+
                     );
 
                 }
@@ -1558,7 +2490,10 @@
 
             select.value =
                 String(
-                    currentAssignment
+                    dayAssignments[
+                        place.id
+                    ] ||
+                    "ideas"
                 );
 
 
@@ -1572,7 +2507,15 @@
                         select.value;
 
 
-                    saveAssignments();
+                    localStorage.setItem(
+
+                        STORAGE.dayAssignments,
+
+                        JSON.stringify(
+                            dayAssignments
+                        )
+
+                    );
 
 
                     if (
@@ -1598,7 +2541,8 @@
             );
 
 
-            /* GOOGLE MAPS */
+
+            /* MAP LINK */
 
             if (
                 place.googleMapsURI
@@ -1648,9 +2592,7 @@
 
 
 
-        /* options */
-
-        function addSelectOption(
+        function addOption(
             select,
             value,
             label
@@ -1678,17 +2620,149 @@
 
 
 
-        /* remove place */
+        /* =========================================
+           GOOGLE PHOTO ATTRIBUTION
+        ========================================= */
+
+        function addPhotoAttribution(
+            container,
+            photo
+        ) {
+
+            if (
+                !photo.authorAttributions ||
+                !photo.authorAttributions.length
+            ) {
+
+                return;
+
+            }
+
+
+            const author =
+                photo.authorAttributions[0];
+
+
+            if (
+                !author.displayName
+            ) {
+
+                return;
+
+            }
+
+
+            const credit =
+                document.createElement(
+                    "div"
+                );
+
+
+            credit.className =
+                "photo-attribution";
+
+
+            if (
+                author.uri
+            ) {
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.href =
+                    author.uri;
+
+
+                link.target =
+                    "_blank";
+
+
+                link.rel =
+                    "noopener noreferrer";
+
+
+                link.textContent =
+                    `Photo: ${author.displayName}`;
+
+
+                credit.appendChild(
+                    link
+                );
+
+            }
+
+            else {
+
+                credit.textContent =
+                    `Photo: ${author.displayName}`;
+
+            }
+
+
+            container.appendChild(
+                credit
+            );
+
+        }
+
+
+
+        /* =========================================
+           REMOVE SAVED PLACE
+        ========================================= */
 
         function removePlace(
             placeId
         ) {
 
+            const place =
+                loadedPlaces.find(
+                    item =>
+                        item.id ===
+                        placeId
+                );
+
+
+            const name =
+                place?.displayName ||
+                "this place";
+
+
+            const confirmed =
+                window.confirm(
+                    `Remove ${name} from your trip?`
+                );
+
+
+            if (!confirmed) {
+
+                return;
+
+            }
+
+
             savedPlaceIds =
                 savedPlaceIds.filter(
                     id =>
-                        id !== placeId
+                        id !==
+                        placeId
                 );
+
+
+            loadedPlaces =
+                loadedPlaces.filter(
+                    item =>
+                        item.id !==
+                        placeId
+                );
+
+
+            savedPlaceFallbacks.delete(
+                placeId
+            );
 
 
             delete dayAssignments[
@@ -1696,85 +2770,107 @@
             ];
 
 
+            /*
+                Keep the same existing format:
+                array of Google Place IDs.
+            */
+
             localStorage.setItem(
-                "perfectDaySavedPlaces",
+
+                STORAGE.savedPlaces,
+
                 JSON.stringify(
                     savedPlaceIds
                 )
+
             );
 
 
-            saveAssignments();
+            localStorage.setItem(
+
+                STORAGE.dayAssignments,
+
+                JSON.stringify(
+                    dayAssignments
+                )
+
+            );
 
 
-            loadedPlaces =
-                loadedPlaces.filter(
-                    place =>
-                        place.id !==
-                        placeId
-                );
-
-
-            renderPlaces();
+            setText(
+                "saved-count",
+                savedPlaceIds.length
+            );
 
 
             if (
                 !savedPlaceIds.length
             ) {
 
+                setText(
+                    "trip-status",
+                    ""
+                );
+
+
+                document.getElementById(
+                    "trip-pin-grid"
+                ).innerHTML =
+                    "";
+
+
                 document.getElementById(
                     "trip-empty"
                 ).hidden =
                     false;
 
+
+                return;
+
             }
 
-        }
 
+            setText(
 
+                "trip-status",
 
-        /* save assignments */
+                `${savedPlaceIds.length} saved place${
+                    savedPlaceIds.length === 1
+                        ? ""
+                        : "s"
+                }`
 
-        function saveAssignments() {
-
-            localStorage.setItem(
-                "perfectDayDayAssignments",
-                JSON.stringify(
-                    dayAssignments
-                )
             );
 
+
+            renderPlaces();
+
         }
 
 
 
-        /* board title */
+        /* =========================================
+           BOARD HEADINGS
+        ========================================= */
 
         function updateBoardHeading() {
-
-            const title =
-                document.getElementById(
-                    "board-title"
-                );
-
-
-            const description =
-                document.getElementById(
-                    "board-description"
-                );
-
 
             if (
                 currentFilter ===
                 "all"
             ) {
 
-                title.textContent =
-                    "All saved places";
+                setText(
+                    "board-title",
+                    "All saved places"
+                );
 
 
-                description.textContent =
-                    "Everything you've pinned for this trip.";
+                setText(
+                    "board-description",
+                    "Everything you've pinned for this trip."
+                );
+
 
                 return;
 
@@ -1786,40 +2882,58 @@
                 "ideas"
             ) {
 
-                title.textContent =
-                    "Trip ideas";
+                setText(
+                    "board-title",
+                    "Trip ideas"
+                );
 
 
-                description.textContent =
-                    "Places you love but haven't scheduled yet.";
+                setText(
+                    "board-description",
+                    "Places you love but haven't scheduled yet."
+                );
+
 
                 return;
 
             }
 
 
-            title.textContent =
-                `Day ${currentFilter}`;
+            setText(
+
+                "board-title",
+
+                `Day ${currentFilter}`
+
+            );
 
 
             if (
-                storedTrip &&
-                storedTrip.startDate
+                tripData &&
+                tripData.startDate
             ) {
 
                 const date =
                     addDays(
-                        storedTrip.startDate,
+
+                        tripData.startDate,
+
                         Number(
                             currentFilter
                         ) - 1
+
                     );
 
 
-                description.textContent =
+                setText(
+
+                    "board-description",
+
                     formatLongDate(
                         date
-                    );
+                    )
+
+                );
 
             }
 
@@ -1827,48 +2941,9 @@
 
 
 
-        /* date helpers */
-
-        function calculateTripDays(
-            start,
-            end
-        ) {
-
-            const startDate =
-                parseDate(
-                    start
-                );
-
-
-            const endDate =
-                parseDate(
-                    end
-                );
-
-
-            const difference =
-                endDate -
-                startDate;
-
-
-            /*
-               Hotel checkout day generally
-               isn't a full sightseeing day.
-
-               Jun 1 - Jun 5 = 4 trip days.
-            */
-
-            return Math.max(
-                1,
-                Math.round(
-                    difference /
-                    86400000
-                )
-            );
-
-        }
-
-
+        /* =========================================
+           DATE HELPERS
+        ========================================= */
 
         function parseDate(
             value
@@ -1887,11 +2962,38 @@
 
 
             return new Date(
+
                 Date.UTC(
                     year,
                     month - 1,
                     day
                 )
+
+            );
+
+        }
+
+
+
+        function calculateTripDays(
+            start,
+            end
+        ) {
+
+            const difference =
+                parseDate(end) -
+                parseDate(start);
+
+
+            return Math.max(
+
+                1,
+
+                Math.round(
+                    difference /
+                    86400000
+                )
+
             );
 
         }
@@ -1900,7 +3002,7 @@
 
         function addDays(
             start,
-            days
+            amount
         ) {
 
             const date =
@@ -1910,8 +3012,10 @@
 
 
             date.setUTCDate(
+
                 date.getUTCDate() +
-                days
+                amount
+
             );
 
 
@@ -1928,7 +3032,9 @@
 
             const formatter =
                 new Intl.DateTimeFormat(
+
                     "en-US",
+
                     {
                         month:
                             "short",
@@ -1942,6 +3048,7 @@
                         timeZone:
                             "UTC"
                     }
+
                 );
 
 
@@ -1963,7 +3070,9 @@
         ) {
 
             return new Intl.DateTimeFormat(
+
                 "en-US",
+
                 {
                     month:
                         "short",
@@ -1974,6 +3083,7 @@
                     timeZone:
                         "UTC"
                 }
+
             ).format(
                 date
             );
@@ -1987,7 +3097,9 @@
         ) {
 
             return new Intl.DateTimeFormat(
+
                 "en-US",
+
                 {
                     weekday:
                         "long",
@@ -2001,9 +3113,87 @@
                     timeZone:
                         "UTC"
                 }
+
             ).format(
                 date
             );
+
+        }
+
+
+
+        /* =========================================
+           UI HELPERS
+        ========================================= */
+
+        function setText(
+            id,
+            value
+        ) {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    value;
+
+            }
+
+        }
+
+
+
+        function showError(
+            message
+        ) {
+
+            const box =
+                document.getElementById(
+                    "error-box"
+                );
+
+
+            box.textContent =
+                message;
+
+
+            box.classList.add(
+                "show"
+            );
+
+        }
+
+
+
+        /* =========================================
+           INITIAL PAGE LOAD
+
+           This executes immediately and DOES NOT
+           wait for Google.
+        ========================================= */
+
+        loadExistingStorage();
+
+
+        if (
+            !savedPlaceIds.length
+        ) {
+
+            setText(
+                "trip-status",
+                ""
+            );
+
+
+            document.getElementById(
+                "trip-empty"
+            ).hidden =
+                false;
 
         }
 
@@ -2011,7 +3201,15 @@
 
 
 
-    <!-- googleapi-->
+    <!-- =========================================
+         GOOGLE MAPS + PLACES
+
+         IMPORTANT:
+         use the SAME restricted key as index.html.
+
+         Notice the callback is initTripPage,
+         NOT initPerfectDay.
+    ========================================== -->
 
     <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNW2vm1N7fQL_PEPxaikH8hAmuUO0l2ys&libraries=places&loading=async&callback=initPerfectDay&v=weekly"
