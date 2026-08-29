@@ -4,7 +4,7 @@
 
     Perfect Day is a personalized vacation planning web application designed to help travelers curate their ideal itinerary!
  
-    By selecting a destination city and pinning a lodging location, users can effortlessly discover and organize nearby restaurants, cafés, museums, and hidden gems to build their perfect day.
+    By selecting a destination city and pinning a lodging location, you can effortlessly discover and organize nearby restaurants, cafés, museums, and hidden gems to build your perfect day.
  
  ~*How do I search and choose my destination(s)?*~
 
@@ -19,7 +19,7 @@
     Schedule your trip windows to accurately align itinerary events with your travel dates. 
 
 NOTE:
-    Perfect Day is a work in progress. Any comments and complaints are accepted. 
+    Perfect Day is a work in progress. We are open to all comments and criticisms. 
     
     
     
