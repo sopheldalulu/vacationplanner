@@ -3199,7 +3199,26 @@
 
     </script>
 
+<script>
+    setTimeout(() => {
 
+        if (!window.google || !window.google.maps) {
+
+            const status =
+                document.getElementById("trip-status");
+
+            if (status) {
+                status.textContent =
+                    "Google Places did not load. Check the API key or callback.";
+            }
+
+            console.error(
+                "Google Maps JavaScript API did not initialize."
+            );
+        }
+
+    }, 5000);
+</script>
 
 
 
