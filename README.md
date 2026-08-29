@@ -7,7 +7,7 @@
     By selecting a destination city and pinning a lodging location, you can effortlessly discover and organize nearby restaurants, cafés, museums, and hidden gems to build your perfect day.
  
 
-**F
+**FREQUENTLY ASKED QUESTIONS**
 
  ~*How do I search and choose my destination(s)?*~
 
@@ -20,6 +20,7 @@
  ~*How do I input travel dates?*~
     
     Schedule your trip windows to accurately align itinerary events with your travel dates. 
+
 
 NOTE:
     Perfect Day is a work in progress. We are open to all comments and criticisms. 
