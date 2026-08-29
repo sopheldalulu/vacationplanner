@@ -164,6 +164,7 @@ button {
     max-width: 900px;
     margin: 0 auto 14px;
     color: var(--text);
+    padding: 15px;
 }
 
 .hero h1 span {
