@@ -1,4 +1,3 @@
-/*perfect day*/
 
 const trip = {
     destination: null,
