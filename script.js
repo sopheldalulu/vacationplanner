@@ -1,4 +1,3 @@
-
 const trip = {
     destination: null,
     stay: null,
