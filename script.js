@@ -408,6 +408,7 @@ function selectDestination(place) {
 
 
     saveTripSettings();
+    
 
     closeDropdowns();
 
