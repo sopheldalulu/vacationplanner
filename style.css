@@ -132,6 +132,7 @@ button {
     color: var(--muted);
     line-height: 1.65;
     font-size: 17px;
+    padding: 10px;
 }
 
 /*trip search*/
