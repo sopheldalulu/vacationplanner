@@ -24,6 +24,9 @@
 
 NOTE:
     Perfect Day is a work in progress. We are open to all comments and criticisms. 
+
+    Graphic Design: Erin and Nathalia
+    Frontend, Backend Code: Sophel
     
     
     
