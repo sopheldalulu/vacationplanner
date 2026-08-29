@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap');
+
 :root {
     --cream: #fffaf5;
     --white: #ffffff;
@@ -18,32 +20,6 @@
 
 html {
     scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-
-    background: var(--cream);
-    color: var(--text);
-
-    font-family: "Gaegu", cursive;
-    font-size: 18px;
-    font-weight: 400;
-}
-
-button,
-input,
-select,
-textarea {
-    font-family: "Gaegu", cursive;
-    font-size: 17px;
-}
-
-h1,
-h2,
-h3,
-.logo {
-    font-family: "Gaegu", cursive;
 }
 
 .logo {
@@ -945,3 +921,14 @@ footer {
     }
 }
 
+
+html,
+body,
+body *,
+button,
+input,
+select,
+textarea,
+a {
+    font-family: "Gaegu", cursive !important;
+}
