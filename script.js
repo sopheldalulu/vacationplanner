@@ -42,19 +42,19 @@ function setupControls() {
 
 
     setupDropdown(
-        "destination-trigger",
-        "destination-dropdown"
-    );
+    "destination-trigger",
+    "destination-dropdown"
+);
 
     setupDropdown(
-        "stay-trigger",
-        "stay-dropdown"
-    );
+    "stay-trigger",
+    "stay-dropdown"
+);
 
     setupDropdown(
-        "dates-trigger",
-        "dates-dropdown"
-    );
+    "dates-trigger",
+    "dates-dropdown"
+);
 
 
     const applyDatesButton =
