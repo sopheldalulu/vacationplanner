@@ -699,10 +699,13 @@ gmp-place-autocomplete {
 
 .saved-section {
     width: min(1450px, 94%);
-
     margin: auto;
-
     padding: 45px 0 80px;
+    display: none;
+}
+
+.saved-section.has-saved-places {
+    display: block;
 }
 
 
