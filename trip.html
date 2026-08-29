@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Trip | Perfect Day</title>
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Gaegu:wght@400;700&display=swap"
+        rel="preconnect"
+    >
+
+    <!--  existing CSS -->
+    <link rel="stylesheet" href="style.css">
+
+
+    <!-- Trip page-specific CSS -->
+    <style>
+
+        .trip-page {
+            width: min(1450px, 94%);
+            margin: auto;
+            padding: 55px 0 100px;
+        }
+
+
+        .trip-page-header {
+            margin-bottom: 35px;
+        }
+
+
+        .trip-page-header h1 {
+            font-family: "Gaegu", cursive;
+            font-size: clamp(55px, 8vw, 90px);
+            line-height: 0.95;
+            margin: 0;
+        }
+
+
+        .trip-page-header h1 span {
+            color: var(--coral);
+        }
+
+
+        .trip-page-description {
+            color: var(--muted);
+            margin-top: 15px;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+
+        /* trip summary */
+
+        .trip-summary-card {
+            background: white;
+
+            border: 1px solid var(--border);
+            border-radius: 24px;
+
+            padding: 22px;
+
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 18px;
+
+            margin-bottom: 35px;
+        }
+
+
+        .trip-summary-left {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+
+        .summary-pill {
+            background: #faf7f3;
+
+            border-radius: 999px;
+
+            padding: 10px 14px;
+
+            font-size: 13px;
+        }
+
+
+        .change-trip-link {
+            text-decoration: none;
+
+            color: var(--text);
+
+            font-weight: 700;
+
+            padding: 10px 16px;
+
+            border: 1px solid var(--border);
+            border-radius: 999px;
+
+            background: white;
+        }
+
+
+        /* tabs */
+
+        .trip-tabs {
+            display: flex;
+
+            gap: 9px;
+
+            overflow-x: auto;
+
+            padding: 5px 0 22px;
+
+            scrollbar-width: none;
+        }
+
+
+        .trip-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        .trip-tab {
+            flex: 0 0 auto;
+
+            border: 1px solid var(--border);
+
+            background: white;
+
+            border-radius: 999px;
+
+            padding: 11px 17px;
+
+            font-weight: 600;
+        }
+
+
+        .trip-tab.active {
+            background: var(--text);
+            color: white;
+            border-color: var(--text);
+        }
+
+
+        /* section */
+
+        .board-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .board-heading h2 {
+            font-family: "Gaegu", cursive;
+
+            font-size: clamp(40px, 5vw, 60px);
+
+            margin: 0;
+        }
+
+
+        .board-heading p {
+            color: var(--muted);
+
+            margin: 4px 0 0;
+        }
+
+
+        /* saved pin grid */
+
+        .trip-pin-grid {
+            columns: 4;
+            column-gap: 18px;
+        }
+
+
+        .trip-pin {
+            display: inline-block;
+
+            width: 100%;
+
+            break-inside: avoid;
+
+            margin: 0 0 22px;
+        }
+
+
+        .trip-pin-image-wrap {
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background: #eee9e3;
+        }
+
+
+        .trip-pin-image {
+            width: 100%;
+
+            display: block;
+
+            object-fit: cover;
+
+            min-height: 220px;
+        }
+
+
+        .trip-pin-fallback {
+            min-height: 270px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 50px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--sky),
+                    var(--sage)
+                );
+        }
+
+
+        .remove-pin-button {
+            position: absolute;
+
+            top: 12px;
+            right: 12px;
+
+            width: 42px;
+            height: 42px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.94);
+
+            font-size: 18px;
+        }
+
+
+        .trip-pin-info {
+            padding: 10px 3px 0;
+        }
+
+
+        .trip-pin-info h3 {
+            margin: 0 0 6px;
+
+            font-size: 16px;
+        }
+
+
+        .trip-pin-meta {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+
+        .trip-pin-address {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.4;
+        }
+
+
+        .day-select-label {
+            display: block;
+
+            margin-top: 11px;
+            margin-bottom: 5px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.06em;
+        }
+
+
+        .day-select {
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            background: white;
+
+            font: inherit;
+
+            font-size: 13px;
+        }
+
+
+        .maps-link {
+            display: inline-block;
+
+            margin-top: 9px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: var(--text);
+        }
+
+
+        /* empty */
+
+        .trip-empty {
+            max-width: 600px;
+
+            margin: 50px auto;
+
+            text-align: center;
+
+            background: white;
+
+            border: 1px dashed #d6cec5;
+
+            border-radius: 26px;
+
+            padding: 55px 25px;
+        }
+
+
+        .trip-empty span {
+            display: block;
+
+            font-size: 48px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .trip-empty h2 {
+            font-family: "Gaegu", cursive;
+
+            font-size: 45px;
+
+            margin: 0;
+        }
+
+
+        .trip-empty p {
+            color: var(--muted);
+
+            line-height: 1.5;
+        }
+
+
+        .discover-link {
+            display: inline-block;
+
+            margin-top: 10px;
+
+            background: var(--coral);
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 12px 20px;
+
+            border-radius: 999px;
+
+            font-weight: 700;
+        }
+
+
+        /* loading */
+
+        .trip-status {
+            color: var(--muted);
+
+            margin: 20px 0;
+
+            min-height: 25px;
+        }
+
+
+        .google-credit {
+            color: var(--muted);
+
+            text-align: center;
+
+            margin-top: 40px;
+
+            font-size: 11px;
+        }
+
+
+        /* responsiveness */
+
+        @media (max-width: 1100px) {
+
+            .trip-pin-grid {
+                columns: 3;
+            }
+
+        }
+
+
+        @media (max-width: 750px) {
+
+            .trip-pin-grid {
+                columns: 2;
+                column-gap: 12px;
+            }
+
+
+            .trip-summary-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+
+            .board-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media (max-width: 400px) {
+
+            .trip-pin-grid {
+                columns: 1;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- headerr -->
+
+    <header class="site-header">
+
+        <nav class="navbar">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <span class="logo-sun">
+                    ☀
+                </span>
+
+                <span>
+                    Perfect Day
+                </span>
+
+            </a>
+
+
+            <a
+                href="index.html"
+                class="my-trip-button"
+            >
+                ← Discover
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <main class="trip-page">
+
+
+        <!-- page title -->
+
+        <section class="trip-page-header">
+
+            <p class="eyebrow">
+                ♡ YOUR VACATION BOARD
+            </p>
+
+
+            <h1>
+                My
+                <span>Perfect Trip.</span>
+            </h1>
+
+
+            <p class="trip-page-description">
+                Everything you saved lives here.
+                Keep your ideas unscheduled or add them
+                to a specific day of your vacation.
+            </p>
+
+        </section>
+
+
+
+        <!-- trip summary -->
+
+        <section
+            class="trip-summary-card"
+            id="trip-summary"
+        >
+
+            <div class="trip-summary-left">
+
+                <span
+                    class="summary-pill"
+                    id="trip-destination"
+                >
+                    📍 No destination
+                </span>
+
+
+                <span
+                    class="summary-pill"
+                    id="trip-stay"
+                >
+                    🏨 No stay added
+                </span>
+
+
+                <span
+                    class="summary-pill"
+                    id="trip-dates"
+                >
+                    📅 No dates
+                </span>
+
+            </div>
+
+
+            <a
+                href="index.html"
+                class="change-trip-link"
+            >
+                ✎ Edit trip
+            </a>
+
+        </section>
+
+
+
+        <!-- day tabs -->
+
+        <div
+            class="trip-tabs"
+            id="trip-tabs"
+        >
+
+            <button
+                type="button"
+                class="trip-tab active"
+                data-day="all"
+            >
+                All
+            </button>
+
+
+            <button
+                type="button"
+                class="trip-tab"
+                data-day="ideas"
+            >
+                ♡ Ideas
+            </button>
+
+        </div>
+
+
+
+        <!-- board -->
+
+        <section>
+
+            <div class="board-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        📌 SAVED PLACES
+                    </p>
+
+
+                    <h2 id="board-title">
+                        All saved places
+                    </h2>
+
+
+                    <p id="board-description">
+                        Choose a day for each place whenever you're ready.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <p
+                class="trip-status"
+                id="trip-status"
+                aria-live="polite"
+            >
+                Loading your trip...
+            </p>
+
+
+            <div
+                class="trip-pin-grid"
+                id="trip-pin-grid"
+            >
+            </div>
+
+
+            <div
+                class="trip-empty"
+                id="trip-empty"
+                hidden
+            >
+
+                <span>
+                    🧳
+                </span>
+
+
+                <h2>
+                    Nothing saved yet.
+                </h2>
+
+
+                <p>
+                    Go back to Discover and tap the heart
+                    on places you want to visit.
+                </p>
+
+
+                <a
+                    href="index.html"
+                    class="discover-link"
+                >
+                    Find places →
+                </a>
+
+            </div>
+
+
+            <div class="google-credit">
+                Place information provided by Google
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- script -->
+
+    <script>
+
+        let PlaceClass = null;
+
+        let savedPlaceIds =
+            JSON.parse(
+                localStorage.getItem(
+                    "perfectDaySavedPlaces"
+                ) || "[]"
+            );
+
+
+        let dayAssignments =
+            JSON.parse(
+                localStorage.getItem(
+                    "perfectDayDayAssignments"
+                ) || "{}"
+            );
+
+
+        let currentFilter =
+            "all";
+
+
+        let loadedPlaces =
+            [];
+
+
+        const storedTrip =
+            JSON.parse(
+                localStorage.getItem(
+                    "perfectDayTrip"
+                ) || "null"
+            );
+
+
+        /* google initialization */
+
+        window.initTripPage =
+            async function () {
+
+                try {
+
+                    const { Place } =
+                        await google.maps.importLibrary(
+                            "places"
+                        );
+
+
+                    PlaceClass =
+                        Place;
+
+
+                    await loadTripSummary();
+
+                    createDayTabs();
+
+                    await loadSavedPlaces();
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Google Places error:",
+                        error
+                    );
+
+
+                    document.getElementById(
+                        "trip-status"
+                    ).textContent =
+                        "Google Places could not load. Check your API key and Google Cloud settings.";
+
+                }
+
+            };
+
+
+        /* trip summary */
+
+        async function loadTripSummary() {
+
+            if (!storedTrip) {
+
+                document.getElementById(
+                    "trip-status"
+                ).textContent =
+                    "No trip settings found.";
+
+                return;
+            }
+
+
+            /* DESTINATION */
+
+            if (
+                storedTrip.destinationPlaceId
+            ) {
+
+                try {
+
+                    const destination =
+                        new PlaceClass({
+                            id:
+                                storedTrip.destinationPlaceId
+                        });
+
+
+                    await destination.fetchFields({
+
+                        fields: [
+                            "displayName"
+                        ]
+
+                    });
+
+
+                    document.getElementById(
+                        "trip-destination"
+                    ).textContent =
+                        `📍 ${destination.displayName}`;
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Destination could not load:",
+                        error
+                    );
+
+                }
+
+            }
+
+
+            /* STAY */
+
+            if (
+                storedTrip.stayPlaceId
+            ) {
+
+                try {
+
+                    const stay =
+                        new PlaceClass({
+                            id:
+                                storedTrip.stayPlaceId
+                        });
+
+
+                    await stay.fetchFields({
+
+                        fields: [
+                            "displayName"
+                        ]
+
+                    });
+
+
+                    document.getElementById(
+                        "trip-stay"
+                    ).textContent =
+                        `🏨 ${stay.displayName}`;
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Stay could not load:",
+                        error
+                    );
+
+                }
+
+            }
+
+
+            /* DATES */
+
+            if (
+                storedTrip.startDate &&
+                storedTrip.endDate
+            ) {
+
+                document.getElementById(
+                    "trip-dates"
+                ).textContent =
+                    `📅 ${formatDateRange(
+                        storedTrip.startDate,
+                        storedTrip.endDate
+                    )}`;
+
+            }
+
+        }
+
+
+
+        /* create days */
+
+        function createDayTabs() {
+
+            const tabs =
+                document.getElementById(
+                    "trip-tabs"
+                );
+
+
+            if (
+                !storedTrip ||
+                !storedTrip.startDate ||
+                !storedTrip.endDate
+            ) {
+
+                setupTabListeners();
+
+                return;
+
+            }
+
+
+            const numberOfDays =
+                calculateTripDays(
+                    storedTrip.startDate,
+                    storedTrip.endDate
+                );
+
+
+            for (
+                let day = 1;
+                day <= numberOfDays;
+                day++
+            ) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.type =
+                    "button";
+
+
+                button.className =
+                    "trip-tab";
+
+
+                button.dataset.day =
+                    String(day);
+
+
+                const date =
+                    addDays(
+                        storedTrip.startDate,
+                        day - 1
+                    );
+
+
+                button.textContent =
+                    `Day ${day} · ${formatShortDate(date)}`;
+
+
+                tabs.appendChild(
+                    button
+                );
+
+            }
+
+
+            setupTabListeners();
+
+        }
+
+
+
+        function setupTabListeners() {
+
+            document
+                .querySelectorAll(
+                    ".trip-tab"
+                )
+                .forEach(button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            document
+                                .querySelectorAll(
+                                    ".trip-tab"
+                                )
+                                .forEach(tab => {
+
+                                    tab.classList.remove(
+                                        "active"
+                                    );
+
+                                });
+
+
+                            button.classList.add(
+                                "active"
+                            );
+
+
+                            currentFilter =
+                                button.dataset.day;
+
+
+                            updateBoardHeading();
+
+                            renderPlaces();
+
+                        }
+                    );
+
+                });
+
+        }
+
+
+
+        /* load saved google places */
+
+        async function loadSavedPlaces() {
+
+            const status =
+                document.getElementById(
+                    "trip-status"
+                );
+
+
+            if (
+                !savedPlaceIds.length
+            ) {
+
+                status.textContent =
+                    "";
+
+
+                document.getElementById(
+                    "trip-empty"
+                ).hidden =
+                    false;
+
+
+                return;
+
+            }
+
+
+            status.textContent =
+                "Loading your saved places...";
+
+
+            loadedPlaces =
+                [];
+
+
+            for (
+                let index = 0;
+                index < savedPlaceIds.length;
+                index++
+            ) {
+
+                const placeId =
+                    savedPlaceIds[index];
+
+
+                try {
+
+                    const place =
+                        new PlaceClass({
+                            id:
+                                placeId
+                        });
+
+
+                    await place.fetchFields({
+
+                        fields: [
+                            "id",
+                            "displayName",
+                            "formattedAddress",
+                            "rating",
+                            "userRatingCount",
+                            "photos",
+                            "googleMapsURI"
+                        ]
+
+                    });
+
+
+                    loadedPlaces.push(
+                        place
+                    );
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Could not load place:",
+                        placeId,
+                        error
+                    );
+
+                }
+
+            }
+
+
+            status.textContent =
+                `${loadedPlaces.length} saved place${
+                    loadedPlaces.length === 1
+                        ? ""
+                        : "s"
+                }`;
+
+
+            renderPlaces();
+
+        }
+
+
+
+        /* render board */
+
+        function renderPlaces() {
+
+            const grid =
+                document.getElementById(
+                    "trip-pin-grid"
+                );
+
+
+            grid.innerHTML =
+                "";
+
+
+            const filteredPlaces =
+                loadedPlaces.filter(
+                    place => {
+
+                        const assignment =
+                            dayAssignments[
+                                place.id
+                            ] || "ideas";
+
+
+                        if (
+                            currentFilter ===
+                            "all"
+                        ) {
+
+                            return true;
+
+                        }
+
+
+                        if (
+                            currentFilter ===
+                            "ideas"
+                        ) {
+
+                            return (
+                                assignment ===
+                                "ideas"
+                            );
+
+                        }
+
+
+                        return (
+                            String(
+                                assignment
+                            ) ===
+                            String(
+                                currentFilter
+                            )
+                        );
+
+                    }
+                );
+
+
+            if (
+                !filteredPlaces.length
+            ) {
+
+                grid.innerHTML = `
+                    <div class="trip-empty">
+                        <span>📌</span>
+
+                        <h2>
+                            Nothing here yet.
+                        </h2>
+
+                        <p>
+                            Assign one of your saved places
+                            to this day.
+                        </p>
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            filteredPlaces.forEach(
+                (place, index) => {
+
+                    grid.appendChild(
+                        createPlaceCard(
+                            place,
+                            index
+                        )
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* create card */
+
+        function createPlaceCard(
+            place,
+            index
+        ) {
+
+            const article =
+                document.createElement(
+                    "article"
+                );
+
+
+            article.className =
+                "trip-pin";
+
+
+            /* IMAGE */
+
+            const imageWrap =
+                document.createElement(
+                    "div"
+                );
+
+
+            imageWrap.className =
+                "trip-pin-image-wrap";
+
+
+            if (
+                place.photos &&
+                place.photos.length
+            ) {
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                image.className =
+                    "trip-pin-image";
+
+
+                image.alt =
+                    `Photo of ${place.displayName}`;
+
+
+                const heights = [
+                    310,
+                    390,
+                    340,
+                    430,
+                    290
+                ];
+
+
+                image.style.height =
+                    `${heights[
+                        index %
+                        heights.length
+                    ]}px`;
+
+
+                image.src =
+                    place.photos[0].getURI({
+
+                        maxWidth:
+                            900
+
+                    });
+
+
+                imageWrap.appendChild(
+                    image
+                );
+
+            }
+
+            else {
+
+                const fallback =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                fallback.className =
+                    "trip-pin-fallback";
+
+
+                fallback.textContent =
+                    "✈";
+
+
+                imageWrap.appendChild(
+                    fallback
+                );
+
+            }
+
+
+            /* REMOVE */
+
+            const removeButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            removeButton.type =
+                "button";
+
+
+            removeButton.className =
+                "remove-pin-button";
+
+
+            removeButton.textContent =
+                "×";
+
+
+            removeButton.setAttribute(
+                "aria-label",
+                `Remove ${place.displayName}`
+            );
+
+
+            removeButton.addEventListener(
+                "click",
+                () => {
+
+                    removePlace(
+                        place.id
+                    );
+
+                }
+            );
+
+
+            imageWrap.appendChild(
+                removeButton
+            );
+
+
+            article.appendChild(
+                imageWrap
+            );
+
+
+            /* INFO */
+
+            const info =
+                document.createElement(
+                    "div"
+                );
+
+
+            info.className =
+                "trip-pin-info";
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+
+            title.textContent =
+                place.displayName;
+
+
+            info.appendChild(
+                title
+            );
+
+
+            const meta =
+                document.createElement(
+                    "div"
+                );
+
+
+            meta.className =
+                "trip-pin-meta";
+
+
+            if (
+                place.rating
+            ) {
+
+                const rating =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                rating.textContent =
+                    `⭐ ${place.rating.toFixed(1)}`;
+
+
+                if (
+                    place.userRatingCount
+                ) {
+
+                    rating.textContent +=
+                        ` (${place.userRatingCount.toLocaleString()})`;
+
+                }
+
+
+                meta.appendChild(
+                    rating
+                );
+
+            }
+
+
+            info.appendChild(
+                meta
+            );
+
+
+            if (
+                place.formattedAddress
+            ) {
+
+                const address =
+                    document.createElement(
+                        "p"
+                    );
+
+
+                address.className =
+                    "trip-pin-address";
+
+
+                address.textContent =
+                    place.formattedAddress;
+
+
+                info.appendChild(
+                    address
+                );
+
+            }
+
+
+            /* DAY SELECT */
+
+            const label =
+                document.createElement(
+                    "label"
+                );
+
+
+            label.className =
+                "day-select-label";
+
+
+            label.textContent =
+                "Add to";
+
+
+            const select =
+                document.createElement(
+                    "select"
+                );
+
+
+            select.className =
+                "day-select";
+
+
+            const currentAssignment =
+                dayAssignments[
+                    place.id
+                ] || "ideas";
+
+
+            addSelectOption(
+                select,
+                "ideas",
+                "♡ Ideas"
+            );
+
+
+            if (
+                storedTrip &&
+                storedTrip.startDate &&
+                storedTrip.endDate
+            ) {
+
+                const days =
+                    calculateTripDays(
+                        storedTrip.startDate,
+                        storedTrip.endDate
+                    );
+
+
+                for (
+                    let day = 1;
+                    day <= days;
+                    day++
+                ) {
+
+                    const date =
+                        addDays(
+                            storedTrip.startDate,
+                            day - 1
+                        );
+
+
+                    addSelectOption(
+                        select,
+                        String(day),
+                        `Day ${day} · ${formatShortDate(date)}`
+                    );
+
+                }
+
+            }
+
+
+            select.value =
+                String(
+                    currentAssignment
+                );
+
+
+            select.addEventListener(
+                "change",
+                () => {
+
+                    dayAssignments[
+                        place.id
+                    ] =
+                        select.value;
+
+
+                    saveAssignments();
+
+
+                    if (
+                        currentFilter !==
+                        "all"
+                    ) {
+
+                        renderPlaces();
+
+                    }
+
+                }
+            );
+
+
+            info.appendChild(
+                label
+            );
+
+
+            info.appendChild(
+                select
+            );
+
+
+            /* GOOGLE MAPS */
+
+            if (
+                place.googleMapsURI
+            ) {
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.className =
+                    "maps-link";
+
+
+                link.href =
+                    place.googleMapsURI;
+
+
+                link.target =
+                    "_blank";
+
+
+                link.rel =
+                    "noopener noreferrer";
+
+
+                link.textContent =
+                    "View on Google Maps ↗";
+
+
+                info.appendChild(
+                    link
+                );
+
+            }
+
+
+            article.appendChild(
+                info
+            );
+
+
+            return article;
+
+        }
+
+
+
+        /* options */
+
+        function addSelectOption(
+            select,
+            value,
+            label
+        ) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                value;
+
+
+            option.textContent =
+                label;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+
+
+
+        /* remove place */
+
+        function removePlace(
+            placeId
+        ) {
+
+            savedPlaceIds =
+                savedPlaceIds.filter(
+                    id =>
+                        id !== placeId
+                );
+
+
+            delete dayAssignments[
+                placeId
+            ];
+
+
+            localStorage.setItem(
+                "perfectDaySavedPlaces",
+                JSON.stringify(
+                    savedPlaceIds
+                )
+            );
+
+
+            saveAssignments();
+
+
+            loadedPlaces =
+                loadedPlaces.filter(
+                    place =>
+                        place.id !==
+                        placeId
+                );
+
+
+            renderPlaces();
+
+
+            if (
+                !savedPlaceIds.length
+            ) {
+
+                document.getElementById(
+                    "trip-empty"
+                ).hidden =
+                    false;
+
+            }
+
+        }
+
+
+
+        /* save assignments */
+
+        function saveAssignments() {
+
+            localStorage.setItem(
+                "perfectDayDayAssignments",
+                JSON.stringify(
+                    dayAssignments
+                )
+            );
+
+        }
+
+
+
+        /* board title */
+
+        function updateBoardHeading() {
+
+            const title =
+                document.getElementById(
+                    "board-title"
+                );
+
+
+            const description =
+                document.getElementById(
+                    "board-description"
+                );
+
+
+            if (
+                currentFilter ===
+                "all"
+            ) {
+
+                title.textContent =
+                    "All saved places";
+
+
+                description.textContent =
+                    "Everything you've pinned for this trip.";
+
+                return;
+
+            }
+
+
+            if (
+                currentFilter ===
+                "ideas"
+            ) {
+
+                title.textContent =
+                    "Trip ideas";
+
+
+                description.textContent =
+                    "Places you love but haven't scheduled yet.";
+
+                return;
+
+            }
+
+
+            title.textContent =
+                `Day ${currentFilter}`;
+
+
+            if (
+                storedTrip &&
+                storedTrip.startDate
+            ) {
+
+                const date =
+                    addDays(
+                        storedTrip.startDate,
+                        Number(
+                            currentFilter
+                        ) - 1
+                    );
+
+
+                description.textContent =
+                    formatLongDate(
+                        date
+                    );
+
+            }
+
+        }
+
+
+
+        /* date helpers */
+
+        function calculateTripDays(
+            start,
+            end
+        ) {
+
+            const startDate =
+                parseDate(
+                    start
+                );
+
+
+            const endDate =
+                parseDate(
+                    end
+                );
+
+
+            const difference =
+                endDate -
+                startDate;
+
+
+            /*
+               Hotel checkout day generally
+               isn't a full sightseeing day.
+
+               Jun 1 - Jun 5 = 4 trip days.
+            */
+
+            return Math.max(
+                1,
+                Math.round(
+                    difference /
+                    86400000
+                )
+            );
+
+        }
+
+
+
+        function parseDate(
+            value
+        ) {
+
+            const [
+                year,
+                month,
+                day
+            ] =
+                value
+                    .split("-")
+                    .map(
+                        Number
+                    );
+
+
+            return new Date(
+                Date.UTC(
+                    year,
+                    month - 1,
+                    day
+                )
+            );
+
+        }
+
+
+
+        function addDays(
+            start,
+            days
+        ) {
+
+            const date =
+                parseDate(
+                    start
+                );
+
+
+            date.setUTCDate(
+                date.getUTCDate() +
+                days
+            );
+
+
+            return date;
+
+        }
+
+
+
+        function formatDateRange(
+            start,
+            end
+        ) {
+
+            const formatter =
+                new Intl.DateTimeFormat(
+                    "en-US",
+                    {
+                        month:
+                            "short",
+
+                        day:
+                            "numeric",
+
+                        year:
+                            "numeric",
+
+                        timeZone:
+                            "UTC"
+                    }
+                );
+
+
+            return (
+                `${formatter.format(
+                    parseDate(start)
+                )} – ` +
+                `${formatter.format(
+                    parseDate(end)
+                )}`
+            );
+
+        }
+
+
+
+        function formatShortDate(
+            date
+        ) {
+
+            return new Intl.DateTimeFormat(
+                "en-US",
+                {
+                    month:
+                        "short",
+
+                    day:
+                        "numeric",
+
+                    timeZone:
+                        "UTC"
+                }
+            ).format(
+                date
+            );
+
+        }
+
+
+
+        function formatLongDate(
+            date
+        ) {
+
+            return new Intl.DateTimeFormat(
+                "en-US",
+                {
+                    weekday:
+                        "long",
+
+                    month:
+                        "long",
+
+                    day:
+                        "numeric",
+
+                    timeZone:
+                        "UTC"
+                }
+            ).format(
+                date
+            );
+
+        }
+
+    </script>
+
+
+
+    <!-- googleapi-->
+
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNW2vm1N7fQL_PEPxaikH8hAmuUO0l2ys&libraries=places&loading=async&callback=initPerfectDay&v=weekly"
+    async
+    defer
+></script>
+
+
+</body>
+
+</html>
