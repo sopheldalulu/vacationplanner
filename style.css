@@ -22,9 +22,33 @@ html {
 
 body {
     margin: 0;
+
     background: var(--cream);
     color: var(--text);
-    font-family: "DM Sans", sans-serif
+
+    font-family: "Gaegu", cursive;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: "Gaegu", cursive;
+    font-size: 17px;
+}
+
+h1,
+h2,
+h3,
+.logo {
+    font-family: "Gaegu", cursive;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 700;
 }
 
 button, input {
