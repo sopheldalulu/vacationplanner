@@ -893,3 +893,7 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+.trip-page-description {
+    padding: 10px;
+}
