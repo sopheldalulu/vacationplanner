@@ -69,7 +69,8 @@ button {
 }
 
 .logo-sun {
-    size: 30px;
+    font-size: 29px;
+    color: var(--yellow);
 }
 
 .my-trip-buttom {
