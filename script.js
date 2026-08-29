@@ -1,5 +1,4 @@
-/*google places + trip planner*/
-
+/*perfect day*/
 
 const trip = {
     destination: null,
@@ -8,269 +7,51 @@ const trip = {
     endDate: null
 };
 
-
 let PlaceClass = null;
-
 let destinationAutocomplete = null;
 let stayAutocomplete = null;
+let googleReady = false;
+let controlsReady = false;
 
-let currentPlaces = [];
+let savedPlaceIds = JSON.parse(
+    localStorage.getItem("perfectDaySavedPlaces") || "[]"
+);
 
-let savedPlaceIds =
-    JSON.parse(
-        localStorage.getItem("perfectDaySavedPlaces") || "[]"
+
+/*page controls to run without google*/
+
+document.addEventListener("DOMContentLoaded", () => {
+    setupControls();
+    updateSavedCount();
+
+    const savedTrip = JSON.parse(
+        localStorage.getItem("perfectDayTrip") || "null"
     );
 
-
-/*google initialization*/
-
-window.initPerfectDay = async function () {
-
-    try {
-
-        const {
-            Place,
-            PlaceAutocompleteElement
-        } =
-            await google.maps.importLibrary("places");
-
-
-        PlaceClass = Place;
-
-
-        /*destination autocomplete*/
-
-        destinationAutocomplete =
-            new PlaceAutocompleteElement({
-                includedPrimaryTypes: [
-                    "(cities)"
-                ]
-            });
-
-
-        destinationAutocomplete.placeholder =
-            "Search a city...";
-
-
-        document
-            .getElementById(
-                "destination-autocomplete"
-            )
-            .appendChild(
-                destinationAutocomplete
-            );
-
-
-        destinationAutocomplete
-            .addEventListener(
-                "gmp-select",
-                async ({ placePrediction }) => {
-
-                    const place =
-                        placePrediction.toPlace();
-
-
-                    await place.fetchFields({
-                        fields: [
-                            "id",
-                            "displayName",
-                            "formattedAddress",
-                            "location"
-                        ]
-                    });
-
-
-                    selectDestination(place);
-
-                }
-            );
-
-
-        /*stay autocomplete*/
-
-        stayAutocomplete =
-            new PlaceAutocompleteElement();
-
-
-        stayAutocomplete.placeholder =
-            "Hotel, resort or address...";
-
-
-        document
-            .getElementById(
-                "stay-autocomplete"
-            )
-            .appendChild(
-                stayAutocomplete
-            );
-
-
-        stayAutocomplete
-            .addEventListener(
-                "gmp-select",
-                async ({ placePrediction }) => {
-
-                    const place =
-                        placePrediction.toPlace();
-
-
-                    await place.fetchFields({
-                        fields: [
-                            "id",
-                            "displayName",
-                            "formattedAddress",
-                            "location"
-                        ]
-                    });
-
-
-                    selectStay(place);
-
-                }
-            );
-
-
-        setupControls();
-
-        restoreTrip();
-
-        updateSavedCount();
-
+    if (savedTrip) {
+        restoreBasicDates(savedTrip);
     }
+});
 
-    catch (error) {
-
-        console.error(
-            "Google Places failed to initialize:",
-            error
-        );
-
-
-        document.getElementById(
-            "setup-message"
-        ).textContent =
-            "Google Places could not load. Check your API key and Google Cloud settings.";
-
-    }
-
-};
-
-
-/*select destination*/
-
-function selectDestination(place) {
-
-    if (!place.location) {
-        return;
-    }
-
-
-    trip.destination = {
-        placeId: place.id,
-
-        name:
-            place.displayName ||
-            place.formattedAddress,
-
-        address:
-            place.formattedAddress || "",
-
-        lat:
-            place.location.lat(),
-
-        lng:
-            place.location.lng()
-    };
-
-
-    document.getElementById(
-        "destination-label"
-    ).textContent =
-        trip.destination.name;
-
-
-    closeDropdowns();
-
-
-    /*
-        bias the accommodation search
-        toward the chosen destination.
-    */
-
-    if (stayAutocomplete) {
-
-        stayAutocomplete.locationBias = {
-            center: {
-                lat: trip.destination.lat,
-                lng: trip.destination.lng
-            },
-
-            radius: 30000
-        };
-
-    }
-
-
-    saveTripSettings();
-
-}
-
-
-/*select stay*/
-
-function selectStay(place) {
-
-    if (!place.location) {
-        return;
-    }
-
-
-    trip.stay = {
-        placeId: place.id,
-
-        name:
-            place.displayName ||
-            place.formattedAddress,
-
-        address:
-            place.formattedAddress || "",
-
-        lat:
-            place.location.lat(),
-
-        lng:
-            place.location.lng()
-    };
-
-
-    document.getElementById(
-        "stay-label"
-    ).textContent =
-        trip.stay.name;
-
-
-    closeDropdowns();
-
-    saveTripSettings();
-
-}
-
-
-/*controls*/
 
 function setupControls() {
+
+    if (controlsReady) {
+        return;
+    }
+
+    controlsReady = true;
+
 
     setupDropdown(
         "destination-trigger",
         "destination-dropdown"
     );
 
-
     setupDropdown(
         "stay-trigger",
         "stay-dropdown"
     );
-
 
     setupDropdown(
         "dates-trigger",
@@ -278,41 +59,46 @@ function setupControls() {
     );
 
 
-    document
-        .getElementById("apply-dates")
-        .addEventListener(
+    const applyDatesButton =
+        document.getElementById("apply-dates");
+
+    if (applyDatesButton) {
+        applyDatesButton.addEventListener(
             "click",
             applyDates
         );
+    }
 
 
-    document
-        .getElementById("explore-button")
-        .addEventListener(
+    const exploreButton =
+        document.getElementById("explore-button");
+
+    if (exploreButton) {
+        exploreButton.addEventListener(
             "click",
             exploreTrip
         );
+    }
 
 
-    document
-        .getElementById("edit-trip")
-        .addEventListener(
+    const editTripButton =
+        document.getElementById("edit-trip");
+
+    if (editTripButton) {
+        editTripButton.addEventListener(
             "click",
             () => {
-
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth"
                 });
-
             }
         );
+    }
 
 
     document
-        .querySelectorAll(
-            ".category-button"
-        )
+        .querySelectorAll(".category-button")
         .forEach(button => {
 
             button.addEventListener(
@@ -320,25 +106,23 @@ function setupControls() {
                 async () => {
 
                     document
-                        .querySelectorAll(
-                            ".category-button"
-                        )
+                        .querySelectorAll(".category-button")
                         .forEach(item => {
-                            item.classList.remove(
-                                "active"
-                            );
+                            item.classList.remove("active");
                         });
 
+                    button.classList.add("active");
 
-                    button.classList.add(
-                        "active"
-                    );
-
+                    if (!googleReady) {
+                        showFeedMessage(
+                            "Google Places is not connected yet."
+                        );
+                        return;
+                    }
 
                     await loadPlaces(
                         button.dataset.category
                     );
-
                 }
             );
 
@@ -346,19 +130,23 @@ function setupControls() {
 
 
     document
-        .querySelectorAll(
-            ".popular-destination"
-        )
+        .querySelectorAll(".popular-destination")
         .forEach(button => {
 
             button.addEventListener(
                 "click",
                 async () => {
 
+                    if (!googleReady) {
+                        showSetupMessage(
+                            "Google Places is not connected yet. Add a valid Google Maps API key first."
+                        );
+                        return;
+                    }
+
                     await resolvePopularDestination(
                         button.dataset.city
                     );
-
                 }
             );
 
@@ -369,39 +157,28 @@ function setupControls() {
         "click",
         event => {
 
-            if (
-                !event.target.closest(
-                    ".search-section"
-                )
-            ) {
-
+            if (!event.target.closest(".search-section")) {
                 closeDropdowns();
-
             }
 
         }
     );
-
 }
 
 
-/*dropdown logic T^T*/
+/*dropdowns*/
 
-function setupDropdown(
-    triggerId,
-    dropdownId
-) {
+function setupDropdown(triggerId, dropdownId) {
 
     const trigger =
-        document.getElementById(
-            triggerId
-        );
-
+        document.getElementById(triggerId);
 
     const dropdown =
-        document.getElementById(
-            dropdownId
-        );
+        document.getElementById(dropdownId);
+
+    if (!trigger || !dropdown) {
+        return;
+    }
 
 
     trigger.addEventListener(
@@ -410,24 +187,14 @@ function setupDropdown(
 
             event.stopPropagation();
 
-
             const alreadyOpen =
-                dropdown.classList.contains(
-                    "open"
-                );
-
+                dropdown.classList.contains("open");
 
             closeDropdowns();
 
-
             if (!alreadyOpen) {
-
-                dropdown.classList.add(
-                    "open"
-                );
-
+                dropdown.classList.add("open");
             }
-
         }
     );
 
@@ -435,37 +202,272 @@ function setupDropdown(
     dropdown.addEventListener(
         "click",
         event => {
-
             event.stopPropagation();
-
         }
     );
-
 }
 
 
 function closeDropdowns() {
 
     document
-        .querySelectorAll(
-            ".search-dropdown"
-        )
+        .querySelectorAll(".search-dropdown")
         .forEach(dropdown => {
+            dropdown.classList.remove("open");
+        });
+}
 
-            dropdown.classList.remove(
-                "open"
+
+/*google places initiation*/
+
+window.initPerfectDay = async function () {
+
+    try {
+
+        const {
+            Place,
+            PlaceAutocompleteElement
+        } = await google.maps.importLibrary("places");
+
+
+        PlaceClass = Place;
+        googleReady = true;
+
+
+        /* DESTINATION */
+
+        destinationAutocomplete =
+            new PlaceAutocompleteElement({
+                includedPrimaryTypes: [
+                    "locality",
+                    "administrative_area_level_1"
+                ]
+            });
+
+
+        destinationAutocomplete.placeholder =
+            "Search a city...";
+
+
+        const destinationContainer =
+            document.getElementById(
+                "destination-autocomplete"
             );
 
-        });
 
+        if (destinationContainer) {
+
+            destinationContainer.innerHTML = "";
+
+            destinationContainer.appendChild(
+                destinationAutocomplete
+            );
+        }
+
+
+        destinationAutocomplete.addEventListener(
+            "gmp-select",
+            async ({ placePrediction }) => {
+
+                const place =
+                    placePrediction.toPlace();
+
+
+                await place.fetchFields({
+                    fields: [
+                        "id",
+                        "displayName",
+                        "formattedAddress",
+                        "location"
+                    ]
+                });
+
+
+                selectDestination(place);
+            }
+        );
+
+
+        /* stay */
+
+        stayAutocomplete =
+            new PlaceAutocompleteElement();
+
+
+        stayAutocomplete.placeholder =
+            "Hotel, resort, hostel or address...";
+
+
+        const stayContainer =
+            document.getElementById(
+                "stay-autocomplete"
+            );
+
+
+        if (stayContainer) {
+
+            stayContainer.innerHTML = "";
+
+            stayContainer.appendChild(
+                stayAutocomplete
+            );
+        }
+
+
+        stayAutocomplete.addEventListener(
+            "gmp-select",
+            async ({ placePrediction }) => {
+
+                const place =
+                    placePrediction.toPlace();
+
+
+                await place.fetchFields({
+                    fields: [
+                        "id",
+                        "displayName",
+                        "formattedAddress",
+                        "location"
+                    ]
+                });
+
+
+                selectStay(place);
+            }
+        );
+
+
+        await restoreGoogleTrip();
+
+        renderSavedPlaces();
+
+        showSetupMessage("");
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Google Places failed:",
+            error
+        );
+
+        googleReady = false;
+
+        showSetupMessage(
+            "Google Places could not load. Check your API key, billing, and enabled APIs."
+        );
+    }
+};
+
+
+/*select destination*/
+
+function selectDestination(place) {
+
+    if (!place || !place.location) {
+        return;
+    }
+
+
+    trip.destination = {
+        placeId: place.id,
+
+        name:
+            place.displayName ||
+            place.formattedAddress ||
+            "Destination",
+
+        address:
+            place.formattedAddress || "",
+
+        lat: place.location.lat(),
+
+        lng: place.location.lng()
+    };
+
+
+    const destinationLabel =
+        document.getElementById(
+            "destination-label"
+        );
+
+
+    if (destinationLabel) {
+        destinationLabel.textContent =
+            trip.destination.name;
+    }
+
+
+    /* bias accommodation autocomplete */
+
+    if (stayAutocomplete) {
+
+        stayAutocomplete.locationBias = {
+            center: {
+                lat: trip.destination.lat,
+                lng: trip.destination.lng
+            },
+            radius: 30000
+        };
+    }
+
+
+    saveTripSettings();
+
+    closeDropdowns();
+
+    showSetupMessage("");
+}
+
+
+/*select stay*/
+
+function selectStay(place) {
+
+    if (!place || !place.location) {
+        return;
+    }
+
+
+    trip.stay = {
+        placeId: place.id,
+
+        name:
+            place.displayName ||
+            place.formattedAddress ||
+            "Accommodation",
+
+        address:
+            place.formattedAddress || "",
+
+        lat: place.location.lat(),
+
+        lng: place.location.lng()
+    };
+
+
+    const stayLabel =
+        document.getElementById(
+            "stay-label"
+        );
+
+
+    if (stayLabel) {
+        stayLabel.textContent =
+            trip.stay.name;
+    }
+
+
+    saveTripSettings();
+
+    closeDropdowns();
 }
 
 
 /*popular destinations*/
 
-async function resolvePopularDestination(
-    cityName
-) {
+async function resolvePopularDestination(cityName) {
 
     if (!PlaceClass) {
         return;
@@ -482,8 +484,7 @@ async function resolvePopularDestination(
         const { places } =
             await PlaceClass.searchByText({
 
-                textQuery:
-                    cityName,
+                textQuery: cityName,
 
                 fields: [
                     "id",
@@ -493,27 +494,22 @@ async function resolvePopularDestination(
                 ],
 
                 maxResultCount: 1
-
             });
 
 
-        if (!places.length) {
+        if (!places || !places.length) {
 
             showSetupMessage(
-                "Destination could not be found."
+                "That destination could not be found."
             );
 
             return;
-
         }
 
 
         selectDestination(
             places[0]
         );
-
-
-        showSetupMessage("");
 
     }
 
@@ -524,27 +520,23 @@ async function resolvePopularDestination(
         showSetupMessage(
             "Could not load that destination."
         );
-
     }
-
 }
 
 
-/*dates*/
+/* dates */
 
 function applyDates() {
 
-    const start =
+    const startInput =
         document.getElementById(
             "start-date"
-        ).value;
+        );
 
-
-    const end =
+    const endInput =
         document.getElementById(
             "end-date"
-        ).value;
-
+        );
 
     const error =
         document.getElementById(
@@ -552,31 +544,42 @@ function applyDates() {
         );
 
 
-    error.textContent = "";
+    if (!startInput || !endInput) {
+        return;
+    }
+
+
+    const start =
+        startInput.value;
+
+    const end =
+        endInput.value;
+
+
+    if (error) {
+        error.textContent = "";
+    }
 
 
     if (!start || !end) {
 
-        error.textContent =
-            "Choose both dates.";
+        if (error) {
+            error.textContent =
+                "Choose both dates.";
+        }
 
         return;
-
     }
 
 
-    /*
-        Date-only strings are directly
-        comparable in YYYY-MM-DD format.
-    */
-
     if (end <= start) {
 
-        error.textContent =
-            "Check-out must be after check-in.";
+        if (error) {
+            error.textContent =
+                "Check-out must be after check-in.";
+        }
 
         return;
-
     }
 
 
@@ -584,48 +587,64 @@ function applyDates() {
     trip.endDate = end;
 
 
-    document.getElementById(
-        "dates-label"
-    ).textContent =
-        formatDateRange(
-            start,
-            end
+    const datesLabel =
+        document.getElementById(
+            "dates-label"
         );
+
+
+    if (datesLabel) {
+
+        datesLabel.textContent =
+            formatDateRange(start, end);
+    }
 
 
     saveTripSettings();
 
     closeDropdowns();
-
 }
 
 
-/*explore*/
+/* explore button*/
 
 async function exploreTrip() {
+
+    if (!googleReady) {
+
+        showSetupMessage(
+            "Google Places is not connected yet. Check your API key first."
+        );
+
+        return;
+    }
+
 
     if (!trip.destination) {
 
         showSetupMessage(
-            "Choose your destination first."
+            "Choose a destination first."
+        );
+
+        openDropdown(
+            "destination-dropdown"
         );
 
         return;
-
     }
 
 
-    if (
-        !trip.startDate ||
-        !trip.endDate
-    ) {
+    if (!trip.startDate || !trip.endDate) {
 
         showSetupMessage(
             "Add your travel dates."
         );
 
-        return;
+        openDropdown(
+            "dates-dropdown"
+        );
 
+        return;
     }
 
 
@@ -638,83 +657,91 @@ async function exploreTrip() {
         );
 
 
-    section.classList.remove(
-        "hidden"
+    if (!section) {
+        return;
+    }
+
+
+    section.classList.remove("hidden");
+
+
+    setText(
+        "discover-city",
+        trip.destination.name
     );
 
 
-    document.getElementById(
-        "discover-city"
-    ).textContent =
-        trip.destination.name;
-
-
-    document.getElementById(
-        "summary-destination"
-    ).textContent =
-        `📍 ${trip.destination.name}`;
+    setText(
+        "summary-destination",
+        `📍 ${trip.destination.name}`
+    );
 
 
     if (trip.stay) {
 
-        document.getElementById(
-            "summary-stay"
-        ).textContent =
-            `🏨 ${trip.stay.name}`;
+        setText(
+            "summary-stay",
+            `🏨 ${trip.stay.name}`
+        );
 
 
-        document.getElementById(
-            "discover-subtitle"
-        ).textContent =
-            `Discovering great places around ${trip.stay.name} and ${trip.destination.name}.`;
+        setText(
+            "discover-subtitle",
+            `Showing ideas near ${trip.stay.name} and around ${trip.destination.name}.`
+        );
 
-    }
+    } else {
 
-    else {
-
-        document.getElementById(
-            "summary-stay"
-        ).textContent =
-            "🏨 Stay not added";
+        setText(
+            "summary-stay",
+            "🏨 No stay added"
+        );
 
 
-        document.getElementById(
-            "discover-subtitle"
-        ).textContent =
-            `Discovering great places around ${trip.destination.name}.`;
-
+        setText(
+            "discover-subtitle",
+            `Discovering places around ${trip.destination.name}.`
+        );
     }
 
 
-    document.getElementById(
-        "summary-dates"
-    ).textContent =
+    setText(
+        "summary-dates",
         `📅 ${formatDateRange(
             trip.startDate,
             trip.endDate
-        )}`;
-
-
-    await loadPlaces(
-        "for-you"
+        )}`
     );
 
 
-    section.scrollIntoView({
-        behavior: "smooth"
-    });
+    await loadPlaces("for-you");
 
+
+    section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 }
 
 
-/* google place search*/
+function openDropdown(id) {
+
+    closeDropdowns();
+
+    const dropdown =
+        document.getElementById(id);
+
+    if (dropdown) {
+        dropdown.classList.add("open");
+    }
+}
+
+
+/* google place search */
 
 async function loadPlaces(category) {
 
-    if (
-        !PlaceClass ||
-        !trip.destination
-    ) {
+    if (!PlaceClass || !trip.destination) {
         return;
     }
 
@@ -725,22 +752,21 @@ async function loadPlaces(category) {
         );
 
 
-    const status =
-        document.getElementById(
-            "feed-status"
-        );
+    if (!grid) {
+        return;
+    }
 
 
     grid.innerHTML = "";
 
-
-    status.textContent =
-        "Finding places you'll love...";
+    showFeedMessage(
+        "Finding places you'll love..."
+    );
 
 
     try {
 
-        let places = [];
+        let places;
 
 
         if (category === "for-you") {
@@ -748,33 +774,28 @@ async function loadPlaces(category) {
             places =
                 await loadForYouPlaces();
 
-        }
-
-        else {
+        } else {
 
             places =
                 await searchPlacesByCategory(
                     category
                 );
-
         }
-
-
-        currentPlaces = places;
 
 
         if (!places.length) {
 
-            status.textContent =
-                "No places found. Try another category.";
+            showFeedMessage(
+                "No places found. Try another category."
+            );
 
             return;
-
         }
 
 
-        status.textContent =
-            `${places.length} places to explore`;
+        showFeedMessage(
+            `${places.length} places to explore`
+        );
 
 
         places.forEach(
@@ -786,7 +807,6 @@ async function loadPlaces(category) {
                         index
                     )
                 );
-
             }
         );
 
@@ -794,115 +814,106 @@ async function loadPlaces(category) {
 
     catch (error) {
 
-        console.error(
-            "Place search failed:",
-            error
+        console.error(error);
+
+        showFeedMessage(
+            "Places could not load. Check the browser console and Google API setup."
         );
-
-
-        status.textContent =
-            "We couldn't load places right now.";
-
     }
-
 }
 
 
-/*for you feed fyp :ppp*/
+/* for you */
 
 async function loadForYouPlaces() {
 
+    const destinationName =
+        trip.destination.name;
+
+
     const searches = [
-        "top attractions",
-        "popular restaurants",
-        "best cafes",
-        "museums",
-        "parks"
+        `top attractions in ${destinationName}`,
+        `popular restaurants in ${destinationName}`,
+        `best cafes in ${destinationName}`,
+        `museums in ${destinationName}`,
+        `parks in ${destinationName}`
     ];
 
 
     const results =
         await Promise.all(
-
-            searches.map(
-                query =>
-                    searchText(
-                        `${query} in ${trip.destination.name}`,
-                        null,
-                        4
-                    )
+            searches.map(query =>
+                searchText(
+                    query,
+                    null,
+                    4
+                )
             )
-
         );
-
-
-    const combined =
-        results.flat();
 
 
     const unique =
         new Map();
 
 
-    combined.forEach(place => {
+    results
+        .flat()
+        .forEach(place => {
 
-        if (!unique.has(place.id)) {
+            if (!unique.has(place.id)) {
 
-            unique.set(
-                place.id,
-                place
-            );
-
-        }
-
-    });
+                unique.set(
+                    place.id,
+                    place
+                );
+            }
+        });
 
 
     return Array.from(
         unique.values()
     );
-
 }
 
 
-/*category search*/
+/* category search */
 
-async function searchPlacesByCategory(
-    category
-) {
+async function searchPlacesByCategory(category) {
 
-    const queryNames = {
+    const destination =
+        trip.destination.name;
+
+
+    const queries = {
 
         tourist_attraction:
-            `things to do in ${trip.destination.name}`,
+            `things to do in ${destination}`,
 
         restaurant:
-            `restaurants in ${trip.destination.name}`,
+            `restaurants in ${destination}`,
 
         cafe:
-            `cafes in ${trip.destination.name}`,
+            `cafes in ${destination}`,
 
         shopping_mall:
-            `shopping in ${trip.destination.name}`,
+            `shopping in ${destination}`,
 
         museum:
-            `museums in ${trip.destination.name}`,
+            `museums in ${destination}`,
 
         park:
-            `parks and gardens in ${trip.destination.name}`
-
+            `parks in ${destination}`
     };
 
 
-    return await searchText(
-        queryNames[category] ||
-            `places to visit in ${trip.destination.name}`,
+    return searchText(
+        queries[category] ||
+        `places to visit in ${destination}`,
 
         category,
 
         20
     );
-
 }
 
 
@@ -914,11 +925,6 @@ async function searchText(
     maxResults = 20
 ) {
 
-    /*
-        the user's stay gets priority for location bias. 
-        otherwise use the destination.
-    */
-
     const center =
         trip.stay
             ? {
@@ -926,18 +932,14 @@ async function searchText(
                 lng: trip.stay.lng
             }
             : {
-                lat:
-                    trip.destination.lat,
-
-                lng:
-                    trip.destination.lng
+                lat: trip.destination.lat,
+                lng: trip.destination.lng
             };
 
 
     const request = {
 
-        textQuery:
-            query,
+        textQuery: query,
 
         fields: [
             "id",
@@ -947,12 +949,12 @@ async function searchText(
             "rating",
             "userRatingCount",
             "photos",
-            "primaryTypeDisplayName",
             "googleMapsURI"
         ],
 
         locationBias: {
             center: center,
+
             radius:
                 trip.stay
                     ? 15000
@@ -960,19 +962,13 @@ async function searchText(
         },
 
         maxResultCount:
-            Math.min(
-                maxResults,
-                20
-            )
-
+            Math.min(maxResults, 20)
     };
 
 
     if (category) {
-
         request.includedType =
             category;
-
     }
 
 
@@ -983,77 +979,55 @@ async function searchText(
 
 
     return places || [];
-
 }
 
+/* =========================================
+   CREATE PLACE CARD
+========================================= */
 
-/*create pinterest card*/
-
-function createPlaceCard(
-    place,
-    index
-) {
+function createPlaceCard(place, index) {
 
     const card =
-        document.createElement(
-            "article"
-        );
-
+        document.createElement("article");
 
     card.className =
         "place-card";
 
 
-    /*image*/
-
     const imageWrap =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     imageWrap.className =
         "place-image-wrap";
 
 
-    if (
-        place.photos &&
-        place.photos.length
-    ) {
+    if (place.photos?.length) {
 
         const photo =
             place.photos[0];
 
 
         const image =
-            document.createElement(
-                "img"
-            );
-
+            document.createElement("img");
 
         image.className =
             "place-image";
 
-
         image.alt =
             `Photo of ${place.displayName || "place"}`;
-
 
 
         const heights = [
             300,
             390,
             340,
-            450,
+            440,
             320
         ];
 
 
         image.style.height =
-            `${heights[
-                index %
-                heights.length
-            ]}px`;
+            `${heights[index % heights.length]}px`;
 
 
         image.src =
@@ -1066,140 +1040,81 @@ function createPlaceCard(
             image
         );
 
-
-        addPhotoAttribution(
-            imageWrap,
-            photo
-        );
-
-    }
-
-    else {
+    } else {
 
         const fallback =
-            document.createElement(
-                "div"
-            );
-
+            document.createElement("div");
 
         fallback.className =
             "no-photo";
 
-
         fallback.textContent =
             "✈";
-
 
         imageWrap.appendChild(
             fallback
         );
-
     }
 
 
-    /*pin button*/
+    const pin =
+        document.createElement("button");
 
-    const pinButton =
-        document.createElement(
-            "button"
-        );
-
-
-    pinButton.type =
+    pin.type =
         "button";
 
-
-    pinButton.className =
+    pin.className =
         "pin-button";
 
 
-    const isSaved =
-        savedPlaceIds.includes(
-            place.id
-        );
+    const alreadySaved =
+        savedPlaceIds.includes(place.id);
 
 
-    if (isSaved) {
-
-        pinButton.classList.add(
-            "saved"
-        );
-
-        pinButton.textContent =
-            "♥";
-
-    }
-
-    else {
-
-        pinButton.textContent =
-            "♡";
-
+    if (alreadySaved) {
+        pin.classList.add("saved");
     }
 
 
-    pinButton.setAttribute(
-        "aria-label",
-        `Save ${place.displayName}`
-    );
+    pin.textContent =
+        alreadySaved ? "♥" : "♡";
 
 
-    pinButton.addEventListener(
+    pin.addEventListener(
         "click",
         () => {
-
             toggleSavedPlace(
                 place,
-                pinButton
+                pin
             );
-
         }
     );
 
 
-    imageWrap.appendChild(
-        pinButton
-    );
+    imageWrap.appendChild(pin);
 
+    card.appendChild(imageWrap);
 
-    card.appendChild(
-        imageWrap
-    );
-
-
-    /*content*/
 
     const info =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     info.className =
         "place-info";
 
 
     const title =
-        document.createElement(
-            "h3"
-        );
-
+        document.createElement("h3");
 
     title.textContent =
         place.displayName ||
         "Unnamed place";
 
-
-    info.appendChild(
-        title
-    );
+    info.appendChild(title);
 
 
     const meta =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     meta.className =
         "place-meta";
@@ -1208,27 +1123,12 @@ function createPlaceCard(
     if (place.rating) {
 
         const rating =
-            document.createElement(
-                "span"
-            );
-
+            document.createElement("span");
 
         rating.textContent =
             `⭐ ${place.rating.toFixed(1)}`;
 
-
-        if (place.userRatingCount) {
-
-            rating.textContent +=
-                ` (${place.userRatingCount.toLocaleString()})`;
-
-        }
-
-
-        meta.appendChild(
-            rating
-        );
-
+        meta.appendChild(rating);
     }
 
 
@@ -1237,7 +1137,7 @@ function createPlaceCard(
         place.location
     ) {
 
-        const distance =
+        const miles =
             calculateDistanceMiles(
                 trip.stay.lat,
                 trip.stay.lng,
@@ -1246,249 +1146,128 @@ function createPlaceCard(
             );
 
 
-        const distanceLabel =
-            document.createElement(
-                "span"
-            );
+        const distance =
+            document.createElement("span");
 
+        distance.textContent =
+            `📍 ${formatDistance(miles)} from stay`;
 
-        distanceLabel.textContent =
-            `📍 ${formatDistance(distance)} from your stay`;
-
-
-        meta.appendChild(
-            distanceLabel
-        );
-
+        meta.appendChild(distance);
     }
 
 
-    info.appendChild(
-        meta
-    );
+    info.appendChild(meta);
 
 
     if (place.formattedAddress) {
 
         const address =
-            document.createElement(
-                "p"
-            );
-
+            document.createElement("p");
 
         address.className =
             "place-address";
 
-
         address.textContent =
             place.formattedAddress;
 
-
-        info.appendChild(
-            address
-        );
-
+        info.appendChild(address);
     }
 
 
     if (place.googleMapsURI) {
 
-        const mapsLink =
-            document.createElement(
-                "a"
-            );
+        const link =
+            document.createElement("a");
 
-
-        mapsLink.className =
+        link.className =
             "maps-link";
 
-
-        mapsLink.href =
-            place.googleMapsURI;
-
-
-        mapsLink.target =
-            "_blank";
-
-
-        mapsLink.rel =
-            "noopener noreferrer";
-
-
-        mapsLink.textContent =
-            "View on Google Maps ↗";
-
-
-        info.appendChild(
-            mapsLink
-        );
-
-    }
-
-
-    card.appendChild(
-        info
-    );
-
-
-    return card;
-
-}
-
-
-/*pic attriubtion*/
-
-function addPhotoAttribution(
-    container,
-    photo
-) {
-
-    if (
-        !photo.authorAttributions ||
-        !photo.authorAttributions.length
-    ) {
-
-        return;
-
-    }
-
-
-    const attribution =
-        photo.authorAttributions[0];
-
-
-    const credit =
-        document.createElement(
-            "div"
-        );
-
-
-    credit.className =
-        "photo-credit";
-
-
-    if (attribution.uri) {
-
-        const link =
-            document.createElement(
-                "a"
-            );
-
-
         link.href =
-            attribution.uri;
-
+            place.googleMapsURI;
 
         link.target =
             "_blank";
 
-
         link.rel =
             "noopener noreferrer";
 
-
         link.textContent =
-            `Photo: ${attribution.displayName}`;
+            "View on Google Maps ↗";
 
-
-        credit.appendChild(
-            link
-        );
-
-    }
-
-    else {
-
-        credit.textContent =
-            `Photo: ${attribution.displayName}`;
-
+        info.appendChild(link);
     }
 
 
-    container.appendChild(
-        credit
-    );
+    card.appendChild(info);
 
+    return card;
 }
 
 
-/* save/unsave */
+/* =========================================
+   SAVING
+========================================= */
 
-function toggleSavedPlace(
-    place,
-    button
-) {
+function toggleSavedPlace(place, button) {
 
-    const existingIndex =
+    const index =
         savedPlaceIds.indexOf(
             place.id
         );
 
 
-    if (existingIndex >= 0) {
+    if (index >= 0) {
 
         savedPlaceIds.splice(
-            existingIndex,
+            index,
             1
         );
-
 
         button.classList.remove(
             "saved"
         );
 
-
         button.textContent =
             "♡";
-
 
         showToast(
             "Removed from your trip"
         );
 
-    }
-
-    else {
-
-
+    } else {
 
         savedPlaceIds.push(
             place.id
         );
 
-
         button.classList.add(
             "saved"
         );
 
-
         button.textContent =
             "♥";
 
-
         showToast(
-            "♡ Added to your trip"
+            "Added to your trip ♡"
         );
-
     }
 
 
     localStorage.setItem(
         "perfectDaySavedPlaces",
-        JSON.stringify(
-            savedPlaceIds
-        )
+        JSON.stringify(savedPlaceIds)
     );
 
 
     updateSavedCount();
 
     renderSavedPlaces();
-
 }
 
 
-/*saved board*/
+/* =========================================
+   SAVED PLACES
+========================================= */
 
 async function renderSavedPlaces() {
 
@@ -1496,6 +1275,11 @@ async function renderSavedPlaces() {
         document.getElementById(
             "saved-grid"
         );
+
+
+    if (!grid) {
+        return;
+    }
 
 
     grid.innerHTML = "";
@@ -1507,18 +1291,16 @@ async function renderSavedPlaces() {
             <div class="empty-saved">
                 <span>🧳</span>
 
-                <h3>
-                    Nothing saved yet.
-                </h3>
+                <h3>Nothing saved yet.</h3>
 
                 <p>
-                    Find something you love and tap the heart.
+                    Find something you love
+                    and tap the heart.
                 </p>
             </div>
         `;
 
         return;
-
     }
 
 
@@ -1537,13 +1319,11 @@ async function renderSavedPlaces() {
 
             const place =
                 new PlaceClass({
-                    id:
-                        savedPlaceIds[i]
+                    id: savedPlaceIds[i]
                 });
 
 
             await place.fetchFields({
-
                 fields: [
                     "id",
                     "displayName",
@@ -1552,10 +1332,8 @@ async function renderSavedPlaces() {
                     "rating",
                     "userRatingCount",
                     "photos",
-                    "primaryTypeDisplayName",
                     "googleMapsURI"
                 ]
-
             });
 
 
@@ -1566,67 +1344,94 @@ async function renderSavedPlaces() {
                 )
             );
 
-        }
-
-        catch (error) {
+        } catch (error) {
 
             console.error(
-                "Could not reload saved place:",
+                "Saved place failed:",
                 error
             );
-
         }
-
     }
-
 }
 
 
-/*save trip settings */
+/* =========================================
+   TRIP STORAGE
+========================================= */
 
 function saveTripSettings() {
 
-    /*
-        We only persist IDs + trip dates.
-
-        Google place details can be fetched
-        fresh when the page loads.
-    */
-
-    const savedTrip = {
+    const data = {
 
         destinationPlaceId:
-            trip.destination
-                ? trip.destination.placeId
-                : null,
+            trip.destination?.placeId || null,
 
         stayPlaceId:
-            trip.stay
-                ? trip.stay.placeId
-                : null,
+            trip.stay?.placeId || null,
 
         startDate:
             trip.startDate,
 
         endDate:
             trip.endDate
-
     };
 
 
     localStorage.setItem(
         "perfectDayTrip",
-        JSON.stringify(
-            savedTrip
-        )
+        JSON.stringify(data)
     );
-
 }
 
 
-/* restore trip*/
+function restoreBasicDates(saved) {
 
-async function restoreTrip() {
+    if (
+        saved.startDate &&
+        saved.endDate
+    ) {
+
+        trip.startDate =
+            saved.startDate;
+
+        trip.endDate =
+            saved.endDate;
+
+
+        const start =
+            document.getElementById(
+                "start-date"
+            );
+
+        const end =
+            document.getElementById(
+                "end-date"
+            );
+
+
+        if (start) {
+            start.value =
+                saved.startDate;
+        }
+
+        if (end) {
+            end.value =
+                saved.endDate;
+        }
+
+
+        setText(
+            "dates-label",
+            formatDateRange(
+                saved.startDate,
+                saved.endDate
+            )
+        );
+    }
+}
+
+
+async function restoreGoogleTrip() {
 
     const saved =
         JSON.parse(
@@ -1636,50 +1441,39 @@ async function restoreTrip() {
         );
 
 
-    if (!saved) {
-
-        renderSavedPlaces();
-
+    if (!saved || !PlaceClass) {
         return;
-
     }
 
 
     try {
 
-        if (
-            saved.destinationPlaceId
-        ) {
+        if (saved.destinationPlaceId) {
 
-            const place =
+            const destination =
                 new PlaceClass({
                     id:
                         saved.destinationPlaceId
                 });
 
 
-            await place.fetchFields({
-
+            await destination.fetchFields({
                 fields: [
                     "id",
                     "displayName",
                     "formattedAddress",
                     "location"
                 ]
-
             });
 
 
             selectDestination(
-                place
+                destination
             );
-
         }
 
 
-        if (
-            saved.stayPlaceId
-        ) {
+        if (saved.stayPlaceId) {
 
             const stay =
                 new PlaceClass({
@@ -1689,197 +1483,90 @@ async function restoreTrip() {
 
 
             await stay.fetchFields({
-
                 fields: [
                     "id",
                     "displayName",
                     "formattedAddress",
                     "location"
                 ]
-
             });
 
 
-            selectStay(
-                stay
-            );
-
+            selectStay(stay);
         }
 
-
-        if (
-            saved.startDate &&
-            saved.endDate
-        ) {
-
-            trip.startDate =
-                saved.startDate;
-
-
-            trip.endDate =
-                saved.endDate;
-
-
-            document.getElementById(
-                "start-date"
-            ).value =
-                saved.startDate;
-
-
-            document.getElementById(
-                "end-date"
-            ).value =
-                saved.endDate;
-
-
-            document.getElementById(
-                "dates-label"
-            ).textContent =
-                formatDateRange(
-                    saved.startDate,
-                    saved.endDate
-                );
-
-        }
-
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
-            "Could not restore trip:",
+            "Trip restore failed:",
             error
         );
-
     }
-
-
-    renderSavedPlaces();
-
 }
 
 
-/*distance STRAIGHT LINE NOT DRIVING*/
+/* =========================================
+   HELPERS
+========================================= */
 
-function calculateDistanceMiles(
-    lat1,
-    lon1,
-    lat2,
-    lon2
-) {
+function setText(id, text) {
 
+    const element =
+        document.getElementById(id);
 
-
-    const earthRadiusMiles =
-        3958.8;
-
-
-    const toRadians =
-        degrees =>
-            degrees *
-            Math.PI /
-            180;
-
-
-    const dLat =
-        toRadians(
-            lat2 - lat1
-        );
-
-
-    const dLon =
-        toRadians(
-            lon2 - lon1
-        );
-
-
-    const a =
-        Math.sin(
-            dLat / 2
-        ) ** 2
-        +
-        Math.cos(
-            toRadians(lat1)
-        )
-        *
-        Math.cos(
-            toRadians(lat2)
-        )
-        *
-        Math.sin(
-            dLon / 2
-        ) ** 2;
-
-
-    const c =
-        2 *
-        Math.atan2(
-            Math.sqrt(a),
-            Math.sqrt(1 - a)
-        );
-
-
-    return earthRadiusMiles * c;
-
+    if (element) {
+        element.textContent =
+            text;
+    }
 }
 
 
-function formatDistance(
-    miles
-) {
+function showSetupMessage(message) {
 
-    if (miles < 0.1) {
-
-        return "<0.1 mi";
-
-    }
-
-
-    if (miles < 10) {
-
-        return `${miles.toFixed(1)} mi`;
-
-    }
-
-
-    return `${Math.round(miles)} mi`;
-
+    setText(
+        "setup-message",
+        message
+    );
 }
 
 
-/*date formatting*/
+function showFeedMessage(message) {
 
-function formatDateRange(
-    start,
-    end
-) {
-
-    const startParts =
-        start.split("-");
+    setText(
+        "feed-status",
+        message
+    );
+}
 
 
-    const endParts =
-        end.split("-");
+function updateSavedCount() {
+
+    setText(
+        "trip-count",
+        savedPlaceIds.length
+    );
+}
 
 
-    const startDate =
-        new Date(
-            Date.UTC(
-                Number(startParts[0]),
-                Number(startParts[1]) - 1,
-                Number(startParts[2])
-            )
-        );
+function formatDateRange(start, end) {
+
+    const createUTCDate =
+        value => {
+
+            const [year, month, day] =
+                value
+                    .split("-")
+                    .map(Number);
 
 
-    const endDate =
-        new Date(
-            Date.UTC(
-                Number(endParts[0]),
-                Number(endParts[1]) - 1,
-                Number(endParts[2])
-            )
-        );
+            return new Date(
+                Date.UTC(
+                    year,
+                    month - 1,
+                    day
+                )
+            );
+        };
 
 
     const formatter =
@@ -1894,43 +1581,73 @@ function formatDateRange(
 
 
     return (
-        `${formatter.format(startDate)} – ` +
-        `${formatter.format(endDate)}`
+        `${formatter.format(createUTCDate(start))} – ` +
+        `${formatter.format(createUTCDate(end))}`
     );
-
 }
 
 
-/*ui helpers*/
-
-function showSetupMessage(
-    message
+function calculateDistanceMiles(
+    lat1,
+    lon1,
+    lat2,
+    lon2
 ) {
 
-    document.getElementById(
-        "setup-message"
-    ).textContent =
-        message;
+    const radius =
+        3958.8;
 
+
+    const radians =
+        degrees =>
+            degrees *
+            Math.PI /
+            180;
+
+
+    const dLat =
+        radians(lat2 - lat1);
+
+    const dLon =
+        radians(lon2 - lon1);
+
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(radians(lat1)) *
+        Math.cos(radians(lat2)) *
+        Math.sin(dLon / 2) ** 2;
+
+
+    return (
+        radius *
+        2 *
+        Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        )
+    );
 }
 
 
-function updateSavedCount() {
+function formatDistance(miles) {
 
-    document.getElementById(
-        "trip-count"
-    ).textContent =
-        savedPlaceIds.length;
+    if (miles < 0.1) {
+        return "<0.1 mi";
+    }
 
+    if (miles < 10) {
+        return `${miles.toFixed(1)} mi`;
+    }
+
+    return `${Math.round(miles)} mi`;
 }
 
 
-let toastTimeout;
+let toastTimer;
 
 
-function showToast(
-    message
-) {
+function showToast(message) {
 
     const toast =
         document.getElementById(
@@ -1938,9 +1655,13 @@ function showToast(
         );
 
 
+    if (!toast) {
+        return;
+    }
+
+
     toast.textContent =
         message;
-
 
     toast.classList.add(
         "show"
@@ -1948,20 +1669,17 @@ function showToast(
 
 
     clearTimeout(
-        toastTimeout
+        toastTimer
     );
 
 
-    toastTimeout =
+    toastTimer =
         setTimeout(
             () => {
-
                 toast.classList.remove(
                     "show"
                 );
-
             },
-            2200
+            2000
         );
-
 }
