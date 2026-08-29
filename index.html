@@ -41,7 +41,7 @@
 
             <a href="index.html" class="logo">
                 <span class="logo-sun">
-                    <img src="images/logo.png">
+                    <img src="images/Logo.png">
                 </span>
                 <span>Perfect Day</span>
             </a>
@@ -74,322 +74,177 @@
 
         <section class="hero">
 
-            <p class="eyebrow">
-                ✈ PLAN THE PERFECT VACATION
-            </p>
-
-
-            <h1>
-                Find your
-                <span>Perfect Day.</span>
-            </h1>
-
-
-            <p class="hero-copy">
-                Tell us where you're going.
-                Then scroll through real places,
-                restaurants, cafés, museums and hidden gems.
-            </p>
-
-
-            <!-- trip search bar !-->
-
-            <div class="trip-search-wrapper">
-
-                <div class="trip-search-bar">
-
-    <!-- =========================
-         1. DESTINATION
-    ========================== -->
-
-    <div class="search-section">
-
-        <button
-            type="button"
-            class="search-trigger"
-            id="destination-trigger"
-        >
-            <span class="search-icon">📍</span>
-
-            <span class="search-trigger-copy">
-                <small>Destination</small>
-
-                <strong id="destination-label">
-                    Where are you going?
-                </strong>
-            </span>
-        </button>
-
-
-        <div
-            class="search-dropdown"
-            id="destination-dropdown"
-        >
-
-            <div class="dropdown-heading">
-                <h2>Where are you going?</h2>
-
-                <p>
-                    Search for a city or destination.
-                </p>
-            </div>
-
-
-            <div
-                id="destination-autocomplete"
-                class="google-input-container"
-            ></div>
-
-
-            <div class="popular-destinations">
-
-                <p class="dropdown-caption">
-                    Popular
-                </p>
-
-
-                <button
-                    type="button"
-                    class="popular-destination"
-                    data-city="Paris, France"
-                >
-                    <span class="destination-emoji">🇫🇷</span>
-
-                    <span>
-                        <strong>Paris</strong>
-                        <small>France</small>
-                    </span>
-                </button>
-
-
-                <button
-                    type="button"
-                    class="popular-destination"
-                    data-city="Tokyo, Japan"
-                >
-                    <span class="destination-emoji">🇯🇵</span>
-
-                    <span>
-                        <strong>Tokyo</strong>
-                        <small>Japan</small>
-                    </span>
-                </button>
-
-
-                <button
-                    type="button"
-                    class="popular-destination"
-                    data-city="New York, NY, USA"
-                >
-                    <span class="destination-emoji">🇺🇸</span>
-
-                    <span>
-                        <strong>New York</strong>
-                        <small>United States</small>
-                    </span>
-                </button>
-
-
-                <button
-                    type="button"
-                    class="popular-destination"
-                    data-city="London, United Kingdom"
-                >
-                    <span class="destination-emoji">🇬🇧</span>
-
-                    <span>
-                        <strong>London</strong>
-                        <small>United Kingdom</small>
-                    </span>
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="search-divider"></div>
-
-
-
-    <!-- =========================
-         2. STAYING AT
-    ========================== -->
-
-    <div class="search-section">
-
-        <button
-            type="button"
-            class="search-trigger"
-            id="stay-trigger"
-        >
-            <span class="search-icon">🏨</span>
-
-            <span class="search-trigger-copy">
-                <small>Staying at</small>
-
-                <strong id="stay-label">
-                    Add hotel or address
-                </strong>
-            </span>
-        </button>
-
-
-        <div
-            class="search-dropdown"
-            id="stay-dropdown"
-        >
-
-            <div class="dropdown-heading">
-                <h2>Where are you staying?</h2>
-
-                <p>
-                    Search for your hotel, resort,
-                    hostel or address.
-                </p>
-            </div>
-
-
-            <div
-                id="stay-autocomplete"
-                class="google-input-container"
-            ></div>
-
-
-            <div class="location-tip">
-                <span>💡</span>
-
-                <p>
-                    We'll use your stay to show
-                    places nearby.
-                </p>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="search-divider"></div>
-
-
-
-    <!-- =========================
-         3. DATES
-    ========================== -->
-
-    <div class="search-section">
-
-        <button
-            type="button"
-            class="search-trigger"
-            id="dates-trigger"
-        >
-            <span class="search-icon">📅</span>
-
-            <span class="search-trigger-copy">
-                <small>Dates</small>
-
-                <strong id="dates-label">
-                    Add dates
-                </strong>
-            </span>
-        </button>
-
-
-        <div
-            class="search-dropdown dates-dropdown"
-            id="dates-dropdown"
-        >
-
-            <div class="dropdown-heading">
-                <h2>When are you going?</h2>
-
-                <p>
-                    Choose your trip dates.
-                </p>
-            </div>
-
-
-            <div class="dates-grid">
-
-                <div class="date-field">
-
-                    <label for="start-date">
-                        Check-in
-                    </label>
-
-                    <input
-                        type="date"
-                        id="start-date"
+    <div class="hero-overlay-card">
+
+        <p class="eyebrow">
+            ✈ BUILD A VACATION YOU'LL LOVE
+        </p>
+
+        <h1>
+            Find your
+            <span>perfect day.</span>
+        </h1>
+
+        <p class="hero-copy">
+            Tell us where you're going.
+            Then scroll through real places,
+            restaurants, cafés, museums and hidden gems.
+        </p>
+
+        <div class="trip-search-wrapper">
+
+            <div class="trip-search-bar">
+
+                <!-- DESTINATION -->
+                <div class="search-section">
+                    <button
+                        type="button"
+                        class="search-trigger"
+                        id="destination-trigger"
                     >
+                        <span class="search-icon">📍</span>
 
+                        <span class="search-trigger-copy">
+                            <small>Destination</small>
+                            <strong id="destination-label">
+                                Where are you going?
+                            </strong>
+                        </span>
+                    </button>
+
+                    <div
+                        class="search-dropdown"
+                        id="destination-dropdown"
+                    >
+                        <div class="dropdown-heading">
+                            <h2>Where are you going?</h2>
+                            <p>Search for a city or destination.</p>
+                        </div>
+
+                        <div
+                            id="destination-autocomplete"
+                            class="google-input-container"
+                        ></div>
+                    </div>
                 </div>
 
+                <div class="search-divider"></div>
 
-                <div class="date-field">
-
-                    <label for="end-date">
-                        Check-out
-                    </label>
-
-                    <input
-                        type="date"
-                        id="end-date"
+                <!-- STAY -->
+                <div class="search-section">
+                    <button
+                        type="button"
+                        class="search-trigger"
+                        id="stay-trigger"
                     >
+                        <span class="search-icon">🏨</span>
 
+                        <span class="search-trigger-copy">
+                            <small>Staying at</small>
+                            <strong id="stay-label">
+                                Add hotel or address
+                            </strong>
+                        </span>
+                    </button>
+
+                    <div
+                        class="search-dropdown"
+                        id="stay-dropdown"
+                    >
+                        <div class="dropdown-heading">
+                            <h2>Where are you staying?</h2>
+                            <p>
+                                Search your hotel, resort,
+                                hostel or address.
+                            </p>
+                        </div>
+
+                        <div
+                            id="stay-autocomplete"
+                            class="google-input-container"
+                        ></div>
+                    </div>
                 </div>
 
+                <div class="search-divider"></div>
+
+                <!-- DATES -->
+                <div class="search-section">
+                    <button
+                        type="button"
+                        class="search-trigger"
+                        id="dates-trigger"
+                    >
+                        <span class="search-icon">📅</span>
+
+                        <span class="search-trigger-copy">
+                            <small>Dates</small>
+                            <strong id="dates-label">
+                                Add dates
+                            </strong>
+                        </span>
+                    </button>
+
+                    <div
+                        class="search-dropdown dates-dropdown"
+                        id="dates-dropdown"
+                    >
+                        <div class="dropdown-heading">
+                            <h2>When are you going?</h2>
+                            <p>Choose your trip dates.</p>
+                        </div>
+
+                        <div class="dates-grid">
+                            <div class="date-field">
+                                <label for="start-date">Check-in</label>
+                                <input type="date" id="start-date">
+                            </div>
+
+                            <div class="date-field">
+                                <label for="end-date">Check-out</label>
+                                <input type="date" id="end-date">
+                            </div>
+                        </div>
+
+                        <p
+                            class="date-error"
+                            id="date-error"
+                            aria-live="polite"
+                        ></p>
+
+                        <button
+                            type="button"
+                            class="apply-button"
+                            id="apply-dates"
+                        >
+                            Apply Dates
+                        </button>
+                    </div>
+                </div>
+
+                <!-- EXPLORE -->
+                <button
+                    type="button"
+                    class="explore-button"
+                    id="explore-button"
+                >
+                    🔍
+                    <span>Explore</span>
+                </button>
+
             </div>
-
-
-            <p
-                class="date-error"
-                id="date-error"
-                aria-live="polite"
-            ></p>
-
-
-            <button
-                type="button"
-                class="apply-button"
-                id="apply-dates"
-            >
-                Apply Dates
-            </button>
 
         </div>
 
+        <p
+            class="setup-message"
+            id="setup-message"
+            aria-live="polite"
+        ></p>
+
     </div>
 
-
-
-    <!-- 4. explore -->
-
-    <button
-        type="button"
-        class="explore-button"
-        id="explore-button"
-    >
-        🔍
-        <span>Explore</span>
-    </button>
-
-</div>
-
-            </div>
-
-
-            <p
-                class="setup-message"
-                id="setup-message"
-                aria-live="polite"
-            >
-            </p>
-
-        </section>
+</section>
 
 
 
