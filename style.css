@@ -101,7 +101,7 @@ button {
 /*hero*/
 .hero {
     text-align: center;
-    padding: 80px 20px 55px;
+    padding: 60px 20px 55px;
     width: min(1350px, 96%);
     margin: auto;
 }
