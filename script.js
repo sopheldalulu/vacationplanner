@@ -369,7 +369,6 @@ function selectDestination(place) {
         return;
     }
 
-
     trip.destination = {
         placeId: place.id,
 
@@ -387,19 +386,12 @@ function selectDestination(place) {
     };
 
 
-    const destinationLabel =
-        document.getElementById(
-            "destination-label"
-        );
+    document.getElementById(
+        "destination-label"
+    ).textContent = trip.destination.name;
 
 
-    if (destinationLabel) {
-        destinationLabel.textContent =
-            trip.destination.name;
-    }
-
-
-    /* bias accommodation autocomplete */
+    /* Bias hotel/address search toward destination */
 
     if (stayAutocomplete) {
 
@@ -408,6 +400,7 @@ function selectDestination(place) {
                 lat: trip.destination.lat,
                 lng: trip.destination.lng
             },
+
             radius: 30000
         };
     }
@@ -417,7 +410,16 @@ function selectDestination(place) {
 
     closeDropdowns();
 
-    showSetupMessage("");
+
+    /* OPEN THE NEXT STEP */
+    setTimeout(() => {
+
+        openDropdown(
+            "stay-dropdown"
+        );
+
+    }, 200);
+
 }
 
 
@@ -429,8 +431,8 @@ function selectStay(place) {
         return;
     }
 
-
     trip.stay = {
+
         placeId: place.id,
 
         name:
@@ -447,21 +449,25 @@ function selectStay(place) {
     };
 
 
-    const stayLabel =
-        document.getElementById(
-            "stay-label"
-        );
-
-
-    if (stayLabel) {
-        stayLabel.textContent =
-            trip.stay.name;
-    }
+    document.getElementById(
+        "stay-label"
+    ).textContent = trip.stay.name;
 
 
     saveTripSettings();
 
     closeDropdowns();
+
+
+    /* OPEN DATES NEXT */
+    setTimeout(() => {
+
+        openDropdown(
+            "dates-dropdown"
+        );
+
+    }, 200);
+
 }
 
 
