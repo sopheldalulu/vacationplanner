@@ -169,34 +169,6 @@ button {
     margin-bottom: 12px;
 }
 
-.hero-brand-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid rgba(236, 231, 225, 0.9);
-    border-radius: 999px;
-
-    padding: 10px 16px;
-    margin-bottom: 18px;
-}
-
-.hero-brand-logo {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    display: block;
-}
-
-.hero-brand-badge span {
-    font-family: "Gaegu", cursive;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1;
-}
-
 /*trip search*/
 .trip-search-wrapper {
     max-width: 1120px;
