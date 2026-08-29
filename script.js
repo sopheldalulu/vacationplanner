@@ -57,17 +57,20 @@ function setupControls() {
 );
 
 
-    const applyDatesButton =
-        document.getElementById("apply-dates");
-
+    const applyDatesButton = 
+    document.getElementById("apply-dates");
+    
     if (applyDatesButton) {
         applyDatesButton.addEventListener(
-            "click",
-            applyDates
-        );
-    }
+        "click",
+        applyDates
+    );
 
+}
 
+/*
+  
+ */
     const exploreButton =
         document.getElementById("explore-button");
 
