@@ -58,45 +58,22 @@ button {
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
+    color: var(--text);
     text-decoration: none;
-    color: var(--text);
-}
-
-.logo-image-wrapper {
-    width: 58px;
-    height: 58px;
-
-    overflow: hidden;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
 
-    flex-shrink: 0;
-}
-
-.logo-image {
-    width: 100px;
-    height: 100px;
-
-    object-fit: contain;
-
-    transform: scale(1.75);
-
-    display: block;
-}
-
-.logo-text {
     font-family: "Gaegu", cursive;
-    font-size: 30px;
+    font-size: 29px;
     font-weight: 700;
-    line-height: 1;
+}
 
-    color: var(--text);
+.logo-sun {
+    font-family: sans-serif;
+    color: #f5b800;
+    font-size: 30px;
 }
 
 .my-trip-buttom {
