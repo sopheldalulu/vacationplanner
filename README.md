@@ -6,6 +6,9 @@
  
     By selecting a destination city and pinning a lodging location, you can effortlessly discover and organize nearby restaurants, cafés, museums, and hidden gems to build your perfect day.
  
+
+**F
+
  ~*How do I search and choose my destination(s)?*~
 
     Search for global destinations or choose from suggested popular travel hubs like Paris, Tokyo, New York, London, Rome, and Barcelona. 
