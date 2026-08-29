@@ -60,17 +60,26 @@ button {
 .logo {
     color: var(--text);
     text-decoration: none;
+
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+}
+
+.logo-mark {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+}
+
+.logo-text {
     font-family: "Gaegu", cursive;
     font-size: 29px;
     font-weight: 700;
-}
-
-.logo-sun {
-    font-size: 29px;
-    color: var(--yellow);
+    line-height: 1;
+    color: var(--text);
 }
 
 .my-trip-buttom {
@@ -158,6 +167,34 @@ button {
     letter-spacing: 0.13em;
     color: var(--coral);
     margin-bottom: 12px;
+}
+
+.hero-brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(236, 231, 225, 0.9);
+    border-radius: 999px;
+
+    padding: 10px 16px;
+    margin-bottom: 18px;
+}
+
+.hero-brand-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    display: block;
+}
+
+.hero-brand-badge span {
+    font-family: "Gaegu", cursive;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
 }
 
 /*trip search*/
